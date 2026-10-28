@@ -1,6 +1,6 @@
 import React from 'react';
-import { 
-  Scan, Sparkles, ArrowRight, ShieldCheck, Thermometer, Camera, 
+import {
+  Scan, Sparkles, ArrowRight, ShieldCheck, Thermometer, Camera,
   Activity, Layers, Cpu, CheckCircle2, Zap, Eye, Compass, RefreshCw, Leaf
 } from 'lucide-react';
 import ModelStatusBanner from '../components/ModelStatusBanner';
@@ -15,7 +15,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'mango',
       sample: MULTI_FRUIT_SAMPLES.mango[0],
       name: 'Sindhoora Red Mango',
-      tamil: 'சிந்தூரா மாம்பழம்',
+      tamil: ' ',
       desc: 'Blushed South Indian cultivar with red-orange carotene blush.',
       badge: 'Red Blushed',
       badgeColor: 'border-rose-500/30 text-rose-400 bg-rose-500/10',
@@ -25,7 +25,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'banana',
       sample: MULTI_FRUIT_SAMPLES.banana[0],
       name: 'Red Banana (Sevazhai)',
-      tamil: 'செவ்வாழை வாழைப்பழம்',
+      tamil: ' ',
       desc: 'Rare high-antioxidant crimson banana from Kanyakumari.',
       badge: 'Anthocyanin Rich',
       badgeColor: 'border-red-500/30 text-red-400 bg-red-500/10',
@@ -35,7 +35,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'orange',
       sample: MULTI_FRUIT_SAMPLES.orange[1],
       name: 'Nagpur Orange',
-      tamil: 'நாக்பூர் ஆரஞ்சு',
+      tamil: ' ',
       desc: 'Vibrant sweet citrus with rich carotenoid & limonene aroma.',
       badge: 'High Vitamin C',
       badgeColor: 'border-orange-500/30 text-orange-400 bg-orange-500/10',
@@ -45,7 +45,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'pomegranate',
       sample: MULTI_FRUIT_SAMPLES.pomegranate[1],
       name: 'Bhagwa Pomegranate',
-      tamil: 'பக்வா மாதுளை',
+      tamil: ' ',
       desc: 'Deep ruby crimson leathery rind packed with polyphenols.',
       badge: 'Ellagitannins',
       badgeColor: 'border-red-500/30 text-red-400 bg-red-500/10',
@@ -55,7 +55,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'guava',
       sample: MULTI_FRUIT_SAMPLES.guava[1],
       name: 'Safeda Pale Guava',
-      tamil: 'சபேடா கொய்யா',
+      tamil: ' ',
       desc: 'Smooth sweet tropical guava with tender aromatic flesh.',
       badge: 'Pectin Softening',
       badgeColor: 'border-lime-500/30 text-lime-400 bg-lime-500/10',
@@ -65,7 +65,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'watermelon',
       sample: MULTI_FRUIT_SAMPLES.watermelon[1],
       name: 'Kiran Watermelon',
-      tamil: 'கிரண் தர்பூசணி',
+      tamil: ' ',
       desc: 'Striped rind with rich golden yellow ground-spot maturation.',
       badge: 'Lycopene Rich',
       badgeColor: 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10',
@@ -75,7 +75,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'mango', // Diagnostic test for plant leaf
       sample: MULTI_FRUIT_SAMPLES.diagnostic[0],
       name: 'Plant / Leaf Test Specimen',
-      tamil: 'பச்சை இலை சோதனை',
+      tamil: '  ',
       desc: 'Tests AI vision detection: accurately recognizes vegetative foliage and prompts for real fruit.',
       badge: '🌿 Plant Test',
       badgeColor: 'border-emerald-500/50 text-emerald-300 bg-emerald-500/20',
@@ -85,7 +85,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       fruitId: 'mango', // Diagnostic test for unsupported fruit
       sample: MULTI_FRUIT_SAMPLES.diagnostic[1],
       name: 'Dragon Fruit (Out of Dataset)',
-      tamil: 'டிராகன் பழம் சோதனை',
+      tamil: '  ',
       desc: 'Tests AI out-of-dataset detection: identifies exotic unsupported fruit and guides to verified database.',
       badge: '🍇 Unsupported Test',
       badgeColor: 'border-purple-500/50 text-purple-300 bg-purple-500/20',
@@ -98,7 +98,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'mango',
       name: 'Mango',
-      tamilName: 'மாம்பழம்',
+
       latinName: 'Mangifera indica',
       icon: '🥭',
       color: 'emerald',
@@ -113,7 +113,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'banana',
       name: 'Banana',
-      tamilName: 'வாழைப்பழம்',
+
       latinName: 'Musa acuminata',
       icon: '🍌',
       color: 'amber',
@@ -128,7 +128,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'papaya',
       name: 'Papaya',
-      tamilName: 'பப்பாளி',
+
       latinName: 'Carica papaya',
       icon: '🍈',
       color: 'orange',
@@ -143,7 +143,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'apple',
       name: 'Apple',
-      tamilName: 'ஆப்பிள்',
+
       latinName: 'Malus domestica',
       icon: '🍎',
       color: 'rose',
@@ -158,7 +158,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'orange',
       name: 'Orange',
-      tamilName: 'ஆரஞ்சு',
+
       latinName: 'Citrus sinensis',
       icon: '🍊',
       color: 'orange',
@@ -173,7 +173,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'guava',
       name: 'Guava',
-      tamilName: 'கொய்யா',
+
       latinName: 'Psidium guajava',
       icon: '🍐',
       color: 'lime',
@@ -188,7 +188,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'pomegranate',
       name: 'Pomegranate',
-      tamilName: 'மாதுளை',
+
       latinName: 'Punica granatum',
       icon: '🔴',
       color: 'red',
@@ -203,7 +203,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
     {
       id: 'watermelon',
       name: 'Watermelon',
-      tamilName: 'தர்பூசணி',
+
       latinName: 'Citrullus lanatus',
       icon: '🍉',
       color: 'emerald',
@@ -219,16 +219,16 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-      
+
       {/* Model Status Notification */}
       <ModelStatusBanner modelStatus={modelStatus} />
 
       {/* Hero Section */}
       <section className="relative glass-card rounded-3xl p-8 sm:p-12 lg:p-16 border border-slate-800 text-center overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-emerald-500/10 via-amber-500/10 to-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-        
+
         <div className="relative z-10 max-w-4xl mx-auto">
-          
+
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-6">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>AI Multi-Fruit Ripening, Plant Guard & Future Simulation</span>
@@ -237,14 +237,14 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
           <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight font-mono">
             Fruit<span className="text-emerald-400">Twin</span>
           </h1>
-          
+
           <p className="text-xl sm:text-2xl font-bold text-amber-300 mt-2 font-sans">
             "See the fruit today. Predict its future."
           </p>
 
           <p className="text-slate-300 text-sm sm:text-base max-w-3xl mx-auto mt-4 leading-relaxed">
-            Next-generation agricultural intelligence framework for multi-fruit post-harvest supply chains. 
-            Coupling real-time computer vision classification, Plant & Non-Fruit Guard, Out-of-Dataset Fruit Detection, 
+            Next-generation agricultural intelligence framework for multi-fruit post-harvest supply chains.
+            Coupling real-time computer vision classification, Plant & Non-Fruit Guard, Out-of-Dataset Fruit Detection,
             Arrhenius biochemical kinetics forecasting, and Conditional Generative Adversarial Networks (cGAN).
           </p>
 
@@ -262,7 +262,6 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
               >
                 <span className="text-base group-hover:scale-125 transition-transform">{fruit.icon}</span>
                 <span>{fruit.name}</span>
-                <span className="text-[10px] text-slate-400 font-sans font-normal">({fruit.tamilName})</span>
               </button>
             ))}
           </div>
@@ -286,13 +285,6 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
               <span>Future Appearance (cGAN)</span>
             </button>
 
-            <button
-              onClick={() => setActiveTab('dataset')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 font-semibold transition-all flex items-center justify-center gap-2 font-mono text-xs"
-            >
-              <Activity className="w-4 h-4 text-amber-400" />
-              <span>IoT & Dataset Telemetry</span>
-            </button>
           </div>
 
         </div>
@@ -302,7 +294,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'SUPPORTED FRUITS', val: '8 Fruits', sub: 'Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, Watermelon', icon: Zap, color: 'text-emerald-400' },
-          { label: 'CULTIVAR DATABASE', val: '30+ Varieties', sub: 'Regional Indian & Tamil Cultivars', icon: Compass, color: 'text-amber-400' },
+          { label: 'CULTIVAR DATABASE', val: '30+ Varieties', sub: 'Regional Indian Cultivars', icon: Compass, color: 'text-amber-400' },
           { label: 'PLANT & FOLIAGE GUARD', val: 'Auto-Filter Active', sub: 'Rejects Leaves & Prompts for Fruit', icon: Leaf, color: 'text-teal-400' },
           { label: 'OUT-OF-DATASET AI', val: 'Exotic Fruit Identifier', sub: 'Detects Dragon Fruit, Kiwi, etc.', icon: Cpu, color: 'text-purple-400' }
         ].map((stat, i) => (
@@ -338,7 +330,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {fruitProfiles.map((fp) => (
-            <div 
+            <div
               key={fp.id}
               className={`glass-card rounded-2xl p-6 border ${fp.accentBorder} flex flex-col justify-between transition-all hover:scale-[1.01] hover:shadow-xl`}
             >
@@ -354,7 +346,6 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
                 <div className="mb-3">
                   <h3 className="text-xl font-black text-white font-mono flex items-baseline gap-2">
                     {fp.name}
-                    <span className="text-xs font-normal text-slate-400 font-sans">({fp.tamilName})</span>
                   </h3>
                   <p className="text-[11px] font-mono italic text-slate-400">{fp.latinName}</p>
                 </div>
@@ -428,16 +419,16 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {quickTestSpecimens.map((item, idx) => (
-            <div 
+            <div
               key={idx}
               className="bg-slate-950/90 rounded-2xl p-4 border border-slate-800/80 hover:border-slate-700 flex flex-col justify-between group transition-all"
             >
               <div>
                 {/* Image Preview Container */}
                 <div className="w-full h-36 rounded-xl bg-slate-900 border border-slate-800 overflow-hidden flex items-center justify-center p-2 mb-3 relative group-hover:border-emerald-500/40 transition-colors">
-                  <img 
-                    src={item.sample.img} 
-                    alt={item.name} 
+                  <img
+                    src={item.sample.img}
+                    alt={item.name}
                     className="h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform"
                   />
                   <div className="absolute top-2 right-2">
@@ -451,7 +442,6 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
                   <span className="text-lg">{item.icon}</span>
                   <h4 className="text-sm font-bold text-white font-mono">{item.name}</h4>
                 </div>
-                <p className="text-xs font-sans text-amber-300/80 mb-2">{item.tamil}</p>
                 <p className="text-[11px] text-slate-400 font-sans leading-relaxed mb-4">
                   {item.desc}
                 </p>

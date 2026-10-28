@@ -17,7 +17,7 @@ export default function HowItWorksSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
+
         {/* Component 1: CV / CNN */}
         <div className="glass-card glass-card-hover rounded-2xl p-6 border border-slate-800 relative overflow-hidden flex flex-col justify-between">
           <div className="absolute top-0 right-0 translate-x-4 -translate-y-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl" />

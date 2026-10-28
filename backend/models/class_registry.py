@@ -111,21 +111,21 @@ class ClassRegistry:
 
             # Botanical / Tamil translations
             tamil_names = {
-                "apple": "ஆப்பிள்",
-                "banana": "வாழைப்பழம்",
-                "mango": "மாம்பழம்",
-                "orange": "ஆரஞ்சு",
-                "papaya": "பப்பாளி",
-                "guava": "கொய்யா",
-                "pomegranate": "மாதுளை",
-                "watermelon": "தர்பூசணி",
-                "strawberry": "ஸ்ட்ராபெர்ரி",
-                "coconut": "தேங்காய்",
-                "litchi": "லிச்சி",
-                "potato": "உருளைக்கிழங்கு",
-                "tomato": "தக்காளி",
-                "corn": "மக்காச்சோளம்",
-                "chestnut": "செஸ்ட்நட்"
+                "apple": "",
+                "banana": "",
+                "mango": "",
+                "orange": "",
+                "papaya": "",
+                "guava": "",
+                "pomegranate": "",
+                "watermelon": "",
+                "strawberry": "",
+                "coconut": "",
+                "litchi": "",
+                "potato": "",
+                "tomato": "",
+                "corn": "",
+                "chestnut": ""
             }
             tamil_name = tamil_names.get(group_lower, group)
 

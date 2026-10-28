@@ -17,9 +17,6 @@ from services.prediction_service import (
     predict_single_ripening_time
 )
 from services.gan_service import simulate_future_stage
-from data.dataset_loader import get_dataset_summary
-from data.rawripe_loader import get_rawripe_summary
-from data.fruits360_loader import find_fruits360_root, discover_dataset_classes
 from models.class_registry import class_registry
 
 app = FastAPI(
@@ -90,22 +87,6 @@ def health_check():
 @app.get("/api/status")
 def model_status(fruit: str = Query("mango")):
     return get_models_status(fruit)
-
-@app.get("/api/dataset")
-def dataset_info():
-    real_summary = get_dataset_summary()
-    rawripe_summary = get_rawripe_summary()
-    fruits360_root = find_fruits360_root()
-    fruits360_summary = discover_dataset_classes(fruits360_root) if fruits360_root else {"status": "not_found"}
-
-    return {
-        "real_mango_dataset": real_summary,
-        "rawripe_dataset": rawripe_summary,
-        "fruits360_dataset": {
-            "num_classes": fruits360_summary.get("num_classes", 0),
-            "classes": list(fruits360_summary.get("classes", {}).keys())
-        }
-    }
 
 # =============================================================================
 # DATASET CLASS CATALOGUE ENDPOINT

@@ -6,7 +6,7 @@ export default function Footer({ setActiveTab }) {
     <footer className="glass-card border-t border-slate-800 mt-20 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          
+
           <div>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">

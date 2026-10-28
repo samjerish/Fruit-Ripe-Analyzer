@@ -24,13 +24,13 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
   if (!isOpen) return null;
 
   const classList = catalog?.class_details || [];
-  
+
   const filteredList = classList.filter((item) => {
-    const matchesSearch = 
+    const matchesSearch =
       item.class_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.group.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (item.variety && item.variety.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (item.tamil_name && item.tamil_name.includes(searchTerm));
+      false;
 
     if (!matchesSearch) return false;
 
@@ -40,13 +40,13 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
   });
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md font-mono"
       role="dialog"
       aria-modal="true"
     >
       <div className="relative w-full max-w-4xl bg-slate-900 border-2 border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-        
+
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-800 bg-slate-950/80 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
@@ -88,7 +88,7 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search class, variety, or Tamil..."
+              placeholder="Search class or variety..."
               className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors font-mono"
             />
           </div>
@@ -98,8 +98,8 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
               type="button"
               onClick={() => setSelectedFilter('all')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                selectedFilter === 'all' 
-                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' 
+                selectedFilter === 'all'
+                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
                   : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
               }`}
             >
@@ -109,8 +109,8 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
               type="button"
               onClick={() => setSelectedFilter('fruit')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                selectedFilter === 'fruit' 
-                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' 
+                selectedFilter === 'fruit'
+                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
                   : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
               }`}
             >
@@ -120,8 +120,8 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
               type="button"
               onClick={() => setSelectedFilter('non_fruit')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                selectedFilter === 'non_fruit' 
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20' 
+                selectedFilter === 'non_fruit'
+                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
                   : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
               }`}
             >
@@ -143,7 +143,7 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
           ) : (
             <div className="grid grid-cols-1 gap-2.5">
               {filteredList.map((item, idx) => (
-                <div 
+                <div
                   key={idx}
                   className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3"
                 >
@@ -156,14 +156,9 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
                         <span className="text-sm font-extrabold text-white">
                           {item.class_name}
                         </span>
-                        {item.tamil_name && (
-                          <span className="text-xs text-amber-300 font-mono">
-                            ({item.tamil_name})
-                          </span>
-                        )}
                         <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
-                          item.is_fruit 
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                          item.is_fruit
+                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                             : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                         }`}>
                           {item.category_type}
@@ -177,7 +172,7 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
 
                   {/* Capability Indicators Matrix */}
                   <div className="flex flex-wrap items-center gap-2">
-                    <span 
+                    <span
                       className="inline-flex items-center gap-1 px-2 py-1 rounded bg-slate-900 border border-slate-800 text-[10px] text-emerald-400 font-bold"
                       title="Universal Multi-Class Identification trained on Fruits-360"
                     >
@@ -185,10 +180,10 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
                       <span>ID: Active</span>
                     </span>
 
-                    <span 
+                    <span
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded border text-[10px] font-bold ${
-                        item.maturity_supported 
-                          ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300' 
+                        item.maturity_supported
+                          ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
                           : 'bg-slate-900 border-slate-800 text-slate-500 opacity-60'
                       }`}
                       title={item.maturity_supported ? "Maturity classification verified via RawRipe" : "Maturity classification unavailable"}
@@ -197,10 +192,10 @@ export default function DatasetClassCatalogModal({ isOpen, onClose, onSelectFrui
                       <span>Maturity: {item.maturity_supported ? 'RawRipe' : 'N/A'}</span>
                     </span>
 
-                    <span 
+                    <span
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded border text-[10px] font-bold ${
-                        item.gan_supported 
-                          ? 'bg-purple-950/50 border-purple-500/40 text-purple-300' 
+                        item.gan_supported
+                          ? 'bg-purple-950/50 border-purple-500/40 text-purple-300'
                           : 'bg-slate-900 border-slate-800 text-slate-500 opacity-60'
                       }`}
                       title={item.gan_supported ? "Conditional GAN simulation checkpoint available" : "GAN simulation unavailable"}

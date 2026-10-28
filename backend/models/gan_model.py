@@ -9,7 +9,7 @@ from models.base import get_fruit_model_paths
 class MangoCGANModel:
     """
     Conditional GAN Generator wrapper for visualizing future ripening stages of Mango, Banana, Papaya, and Apple.
-    Supports specific varietal color transitions (e.g., Red Banana / Sevazhai / செவ்வாழை).
+    Supports specific varietal color transitions (e.g., Red Banana / Sevazhai / ).
     """
     def __init__(self):
         self.model = None

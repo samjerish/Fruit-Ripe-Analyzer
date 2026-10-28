@@ -5,7 +5,7 @@ import HowItWorksSection from '../components/HowItWorksSection';
 export default function AboutPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      
+
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-12">
         <span className="text-amber-400 font-mono text-xs font-semibold uppercase tracking-wider bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
@@ -20,7 +20,7 @@ export default function AboutPage() {
       </div>
 
       <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-800 space-y-8 mb-12">
-        
+
         <div>
           <h2 className="text-2xl font-bold text-white font-mono mb-3">
             Project Overview
@@ -77,7 +77,7 @@ export default function AboutPage() {
           </h3>
           <div className="bg-slate-900/80 p-5 rounded-2xl border border-emerald-500/30 space-y-2">
             <p className="text-xs text-slate-300 leading-relaxed font-sans">
-              <strong className="text-emerald-400 font-mono">Full 4-Fruit Operational Support:</strong> The system actively supports <strong className="text-emerald-300">Mango (மாம்பழம்)</strong>, <strong className="text-amber-300">Banana (வாழைப்பழம்)</strong>, <strong className="text-orange-300">Papaya (பப்பாளி)</strong>, and <strong className="text-rose-300">Apple (ஆப்பிள்)</strong> across 18+ regional Indian cultivars with cross-fruit safety detection.
+              <strong className="text-emerald-400 font-mono">Full 4-Fruit Operational Support:</strong> The system actively supports <strong className="text-emerald-300">Mango ()</strong>, <strong className="text-amber-300">Banana ()</strong>, <strong className="text-orange-300">Papaya ()</strong>, and <strong className="text-rose-300">Apple ()</strong> across 18+ regional Indian cultivars with cross-fruit safety detection.
             </p>
             <p className="text-xs text-slate-400 leading-relaxed font-sans">
               <strong className="text-slate-300 font-mono">Decoupled Namespaces:</strong> Backend model architecture is modularly namespaced under <code className="bg-slate-800 px-1 text-emerald-400 font-mono">models/mango/</code>, <code className="bg-slate-800 px-1 text-amber-400 font-mono">models/banana/</code>, <code className="bg-slate-800 px-1 text-orange-400 font-mono">models/papaya/</code>, and <code className="bg-slate-800 px-1 text-rose-400 font-mono">models/apple/</code>.

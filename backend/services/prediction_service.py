@@ -28,7 +28,7 @@ if os.path.exists(MANGO_REGRESSOR_PATH):
 FRUIT_INFO = {
     "mango": {
         "name": "Mango",
-        "tamil_name": "மாம்பழம்",
+        "tamil_name": "",
         "latin": "Mangifera indica",
         "icon": "🥭",
         "bio": {
@@ -40,7 +40,7 @@ FRUIT_INFO = {
     },
     "banana": {
         "name": "Banana",
-        "tamil_name": "வாழைப்பழம்",
+        "tamil_name": "",
         "latin": "Musa acuminata",
         "icon": "🍌",
         "bio": {
@@ -52,7 +52,7 @@ FRUIT_INFO = {
     },
     "papaya": {
         "name": "Papaya",
-        "tamil_name": "பப்பாளி",
+        "tamil_name": "",
         "latin": "Carica papaya",
         "icon": "🍈",
         "bio": {
@@ -64,7 +64,7 @@ FRUIT_INFO = {
     },
     "apple": {
         "name": "Apple",
-        "tamil_name": "ஆப்பிள்",
+        "tamil_name": "",
         "latin": "Malus domestica",
         "icon": "🍎",
         "bio": {
@@ -76,7 +76,7 @@ FRUIT_INFO = {
     },
     "orange": {
         "name": "Orange",
-        "tamil_name": "ஆரஞ்சு",
+        "tamil_name": "",
         "latin": "Citrus sinensis",
         "icon": "🍊",
         "bio": {
@@ -88,7 +88,7 @@ FRUIT_INFO = {
     },
     "guava": {
         "name": "Guava",
-        "tamil_name": "கொய்யா",
+        "tamil_name": "",
         "latin": "Psidium guajava",
         "icon": "🍐",
         "bio": {
@@ -100,7 +100,7 @@ FRUIT_INFO = {
     },
     "pomegranate": {
         "name": "Pomegranate",
-        "tamil_name": "மாதுளை",
+        "tamil_name": "",
         "latin": "Punica granatum",
         "icon": "🔴",
         "bio": {
@@ -112,7 +112,7 @@ FRUIT_INFO = {
     },
     "watermelon": {
         "name": "Watermelon",
-        "tamil_name": "தர்பூசணி",
+        "tamil_name": "",
         "latin": "Citrullus lanatus",
         "icon": "🍉",
         "bio": {
@@ -124,7 +124,7 @@ FRUIT_INFO = {
     },
     "strawberry": {
         "name": "Strawberry",
-        "tamil_name": "ஸ்ட்ராபெர்ரி",
+        "tamil_name": "",
         "latin": "Fragaria ananassa",
         "icon": "🍓",
         "bio": {
@@ -136,7 +136,7 @@ FRUIT_INFO = {
     },
     "coconut": {
         "name": "Coconut",
-        "tamil_name": "தேங்காய்",
+        "tamil_name": "",
         "latin": "Cocos nucifera",
         "icon": "🥥",
         "bio": {
@@ -148,7 +148,7 @@ FRUIT_INFO = {
     },
     "litchi": {
         "name": "Litchi",
-        "tamil_name": "லிச்சி",
+        "tamil_name": "",
         "latin": "Litchi chinensis",
         "icon": "🍒",
         "bio": {
@@ -280,7 +280,7 @@ def analyze_fruit_image(image: Image.Image, features: Dict[str, float], temperat
                 "detected": True,
                 "confidence": fruit_id_res.get("confidence", 95.0),
                 "object_type": "plant_leaf",
-                "title": "Plant / Foliage Detected | தாவர இலை கண்டறியப்பட்டது",
+                "title": "Plant / Foliage Detected |   ",
                 "message": "This image appears to contain plant material rather than a supported harvested fruit. Fruit Twin requires a recognizable fruit specimen for fruit maturity analysis and GAN simulation."
             },
             "status_message": "⚠️ Plant / Foliage Detected: Please upload an actual fruit specimen.",
@@ -347,7 +347,7 @@ def analyze_fruit_image(image: Image.Image, features: Dict[str, float], temperat
             },
             "nonfruit_validation": {
                 "detected": True,
-                "title": "No Supported Fruit Detected | பழம் கண்டறியப்படவில்லை",
+                "title": "No Supported Fruit Detected |  ",
                 "message": "The uploaded image does not contain a confidently identifiable supported fruit. Please upload a clear photograph of a fruit."
             },
             "status_message": "⚠️ No Fruit Detected: Please upload a valid fruit photo.",
@@ -382,7 +382,7 @@ def analyze_fruit_image(image: Image.Image, features: Dict[str, float], temperat
                 "detected": True,
                 "confidence": fruit_id_res.get("confidence", 92.0),
                 "candidate_name": cand_name,
-                "title": f"Unsupported Fruit Detected | வகைப்படுத்தப்படாத பழம்",
+                "title": f"Unsupported Fruit Detected |  ",
                 "message": f"This appears to be a fruit ({cand_name}), but its fruit-specific analysis pipeline is not currently supported by Fruit Twin."
             },
             "status_message": f"⚠️ Unsupported Fruit Detected ({cand_name}): Not in verified dataset.",
@@ -437,9 +437,9 @@ def analyze_fruit_image(image: Image.Image, features: Dict[str, float], temperat
             "is_mismatch": True,
             "detected_fruit": identified_cat,
             "detected_fruit_name": detected_info["name"],
-            "detected_fruit_tamil": detected_info["tamil_name"],
+            "detected_fruit_tamil": None,
             "detected_fruit_icon": detected_info["icon"],
-            "mismatch_message": f"Fruit Mismatch Detected | தவறான பழ வகை: The uploaded image appears to be a {detected_info['name']} ({detected_info['tamil_name']}), not a {current_info['name']} ({current_info['tamil_name']}). Switch to the {detected_info['name']} pipeline to continue the analysis."
+            "mismatch_message": f"Fruit Mismatch Detected: The uploaded image appears to be a {detected_info['name']}, not a {current_info['name']}. Switch to the {detected_info['name']} pipeline to continue the analysis."
         }
 
     bio_data = FRUIT_INFO[fruit]["bio"].get(four_stage, FRUIT_INFO[fruit]["bio"]["Semi-Ripe"])

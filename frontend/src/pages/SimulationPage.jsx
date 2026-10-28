@@ -77,7 +77,7 @@ export default function SimulationPage({ modelStatus }) {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      
+
       {/* Page Header */}
       <div className="text-center max-w-2xl mx-auto mb-4 font-mono">
         <span className="text-purple-400 text-xs font-bold uppercase tracking-wider bg-purple-500/10 px-3.5 py-1 rounded-full border border-purple-500/20">
@@ -87,7 +87,7 @@ export default function SimulationPage({ modelStatus }) {
           Future Ripening Simulation (cGAN)
         </h1>
         <p className="text-slate-400 text-xs font-sans mt-1">
-          Synthesize photo-realistic future visual ripening appearances of Indian & Tamil fruit cultivars across target maturity stages.
+          Synthesize photo-realistic future visual ripening appearances of Indian fruit cultivars across target maturity stages.
         </p>
       </div>
 
@@ -110,7 +110,6 @@ export default function SimulationPage({ modelStatus }) {
           >
             <span className="text-base">{fruit.icon}</span>
             <span>{fruit.name}</span>
-            <span className="text-[11px] opacity-80">({fruit.tamilName})</span>
           </button>
         ))}
       </div>
@@ -118,7 +117,7 @@ export default function SimulationPage({ modelStatus }) {
       {/* Control Panel */}
       <div className="glass-card rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start font-mono">
-          
+
           {/* Upload & Sample Selector Input */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -130,7 +129,7 @@ export default function SimulationPage({ modelStatus }) {
               </span>
             </div>
 
-            <div 
+            <div
               onClick={() => fileInputRef.current?.click()}
               className="border border-dashed border-slate-800 hover:border-purple-500/50 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-950/80 min-h-[200px] flex flex-col items-center justify-center"
             >
@@ -177,11 +176,11 @@ export default function SimulationPage({ modelStatus }) {
 
           {/* Simulation Stage Options */}
           <div className="space-y-4">
-            
+
             {/* Variety Selector */}
             <div>
               <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                {selectedFruit.name} Cultivar (வகை)
+                {selectedFruit.name} Cultivar ()
               </label>
               <select
                 value={selectedVariety.id}
@@ -193,7 +192,7 @@ export default function SimulationPage({ modelStatus }) {
               >
                 {selectedFruit.varieties.map(v => (
                   <option key={v.id} value={v.id}>
-                    {v.name} ({v.tamilName}) - {v.origin}
+                    {v.name} - {v.origin}
                   </option>
                 ))}
               </select>
@@ -269,11 +268,11 @@ export default function SimulationPage({ modelStatus }) {
         <div className="glass-card rounded-2xl p-6 sm:p-8 border border-slate-800 font-mono">
           <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
             <Eye className="w-5 h-5 text-purple-400" />
-            Visual Stage Comparison: {selectedFruit.name} ({selectedVariety.name} - {selectedVariety.tamilName})
+            Visual Stage Comparison: {selectedFruit.name} ({selectedVariety.name})
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
-            
+
             {/* Input Image */}
             <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col items-center text-center">
               <span className="text-xs font-bold text-slate-400 uppercase mb-3">
@@ -282,7 +281,7 @@ export default function SimulationPage({ modelStatus }) {
               <div className="w-full h-64 rounded-lg bg-slate-900 flex items-center justify-center overflow-hidden border border-slate-800 mb-3">
                 <img src={imagePreview} alt="Input Fruit" className="h-full object-contain p-2" />
               </div>
-              <span className="text-xs text-slate-300 font-bold">{selectedVariety.name} ({selectedVariety.tamilName})</span>
+              <span className="text-xs text-slate-300 font-bold">{selectedVariety.name}</span>
             </div>
 
             {/* Generated GAN Output */}

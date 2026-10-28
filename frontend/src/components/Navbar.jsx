@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Scan, Eye, Info, Database, Layers } from 'lucide-react';
+import { Sparkles, Scan, Eye, Info, Layers } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, modelStatus }) {
   const isConnected = modelStatus?.all_connected;
@@ -8,16 +8,15 @@ export default function Navbar({ activeTab, setActiveTab, modelStatus }) {
     { id: 'home', label: 'Home', icon: Sparkles },
     { id: 'analyze', label: 'Fruit Analysis', icon: Scan },
     { id: 'simulation', label: 'Future Simulation', icon: Eye },
-    { id: 'dataset', label: 'IoT & Dataset', icon: Database },
     { id: 'about', label: 'About Project', icon: Info },
   ];
 
   return (
     <header className="sticky top-0 z-50 glass-card border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl font-mono">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
+
         {/* Brand Logo & Title */}
-        <div 
+        <div
           onClick={() => setActiveTab('home')}
           className="flex items-center gap-3 cursor-pointer group"
         >

@@ -4,7 +4,6 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import AnalysisPage from './pages/AnalysisPage';
 import SimulationPage from './pages/SimulationPage';
-import DatasetPage from './pages/DatasetPage';
 import AboutPage from './pages/AboutPage';
 import { fetchModelStatus } from './services/api';
 
@@ -30,26 +29,26 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500 selection:text-white">
-      
+
       {/* Navigation Bar */}
-      <Navbar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        modelStatus={modelStatus} 
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        modelStatus={modelStatus}
       />
 
       {/* Main Content Area */}
       <main className="flex-1">
         {activeTab === 'home' && (
-          <HomePage 
-            setActiveTab={setActiveTab} 
+          <HomePage
+            setActiveTab={setActiveTab}
             navigateToFruit={navigateToFruit}
-            modelStatus={modelStatus} 
+            modelStatus={modelStatus}
           />
         )}
         {activeTab === 'analyze' && (
-          <AnalysisPage 
-            modelStatus={modelStatus} 
+          <AnalysisPage
+            modelStatus={modelStatus}
             initialFruitId={selectedFruitId}
             initialSample={activeSample}
             onClearSample={() => setActiveSample(null)}
@@ -57,9 +56,6 @@ export default function App() {
         )}
         {activeTab === 'simulation' && (
           <SimulationPage modelStatus={modelStatus} />
-        )}
-        {activeTab === 'dataset' && (
-          <DatasetPage />
         )}
         {activeTab === 'about' && (
           <AboutPage />

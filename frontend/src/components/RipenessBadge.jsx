@@ -18,8 +18,8 @@ export default function RipenessBadge({ stage, size = 'normal' }) {
 
   const currentStyle = styles[stage] || 'bg-slate-800 text-slate-300 border-slate-700';
 
-  const sizeClasses = size === 'large' 
-    ? 'px-4 py-1.5 text-base font-bold' 
+  const sizeClasses = size === 'large'
+    ? 'px-4 py-1.5 text-base font-bold'
     : 'px-3 py-1 text-xs font-bold';
 
   return (

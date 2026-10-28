@@ -12,7 +12,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
   const [imagePreview, setImagePreview] = useState(null);
   const [temperature, setTemperature] = useState(28);
   const [humidity, setHumidity] = useState('65');
-  
+
   const [selectedFruit, setSelectedFruit] = useState(() => {
     if (initialFruitId) {
       return ALL_FRUITS.find(f => f.id === initialFruitId) || ALL_FRUITS[0];
@@ -21,7 +21,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
   });
   const [selectedVariety, setSelectedVariety] = useState(selectedFruit.varieties[0]);
   const [autoDetectedVariety, setAutoDetectedVariety] = useState(null);
-  
+
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -98,10 +98,10 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, 64, 64);
           const data = ctx.getImageData(0, 0, 64, 64).data;
-          
+
           let totalR = 0, totalG = 0, totalB = 0, count = 0;
           let redDomCount = 0;
-          
+
           for (let i = 0; i < data.length; i += 4) {
             const r = data[i], g = data[i+1], b = data[i+2];
             if ((r > 30 || g > 30 || b > 30) && !(r > 240 && g > 240 && b > 240)) {
@@ -114,18 +114,18 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
               }
             }
           }
-          
+
           if (count > 30) {
             const avgR = totalR / count;
             const avgG = totalG / count;
             const redRatio = redDomCount / count;
-            
+
             if (selectedFruit.id === 'banana') {
               if (redRatio >= 0.08 || avgR > avgG * 1.12) {
                 const sevazhaiVar = selectedFruit.varieties.find(v => v.id === 'sevazhai');
                 if (sevazhaiVar) {
                   setSelectedVariety(sevazhaiVar);
-                  setAutoDetectedVariety(`${sevazhaiVar.name} (${sevazhaiVar.tamilName})`);
+                  setAutoDetectedVariety(sevazhaiVar.name);
                 }
               }
             }
@@ -144,7 +144,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           setActiveModal({
             type: 'plant_leaf',
             title: 'Plant / Foliage Detected',
-            tamilTitle: 'தாவர இலை / செடி கண்டறியப்பட்டது',
             message: val.message || 'Vegetative leaves or foliage detected rather than a harvested fruit.',
             preview: url,
             confidence: val.confidence
@@ -153,7 +152,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           setActiveModal({
             type: 'non_fruit',
             title: 'No Fruit Detected',
-            tamilTitle: 'பழம் அல்லாத பொருள்',
             message: val.message || 'Non-botanical object detected.',
             preview: url,
             confidence: val.confidence
@@ -162,7 +160,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           setActiveModal({
             type: 'uncertain',
             title: 'Image Uncertain — Please Try Again',
-            tamilTitle: 'தெளிவற்ற படம் — மீண்டும் முயற்சிக்கவும்',
             message: val.message || 'Fruit Twin could not confidently identify this image. Please upload a clearer photograph showing the fruit.',
             preview: url,
             confidence: val.confidence
@@ -171,7 +168,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           setActiveModal({
             type: 'supported_nonfruit_class',
             title: `Supported Non-Fruit Class: ${val.detected_category}`,
-            tamilTitle: 'பழம் அல்லாத தரவுத்தொகுப்பு வகுப்பு',
             detectedClass: val.detected_category,
             message: val.message || `${val.detected_category} is catalogued in Fruits-360, but it is an agricultural crop, not a fresh fruit.`,
             preview: url,
@@ -182,7 +178,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           setActiveModal({
             type: 'unsupported_fruit',
             title: 'Out-of-Dataset Fruit Specimen',
-            tamilTitle: 'வகைப்படுத்தப்படாத பழம்',
             candidateName: val.detected_category || val.detected_fruit,
             message: val.message || 'Recognized fruit outside the 8 primary Fruit Twin pipelines.',
             preview: url,
@@ -193,7 +188,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           // input_type === 'supported_fruit'
           const detectedFruitId = (val.detected_fruit || '').toLowerCase();
           const detectedFruitObj = ALL_FRUITS.find(f => f.id === detectedFruitId || f.name.toLowerCase() === detectedFruitId);
-          
+
           if (detectedFruitObj && detectedFruitObj.id !== selectedFruit.id) {
             // Mismatch detected across tabs! Show pop-up modal immediately!
             setActiveModal({
@@ -211,16 +206,16 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
             // Fruit matches current tab!
             if (val.detected_variety) {
               setAutoDetectedVariety(val.detected_variety);
-              const match = selectedFruit.varieties.find(v => 
-                val.detected_variety.toLowerCase().includes(v.id) || 
+              const match = selectedFruit.varieties.find(v =>
+                val.detected_variety.toLowerCase().includes(v.id) ||
                 val.detected_variety.toLowerCase().includes(v.name.toLowerCase()) ||
-                (v.id === 'sevazhai' && (val.detected_variety.toLowerCase().includes('red banana') || val.detected_variety.includes('செவ்வாழை'))) ||
-                (v.id === 'sindhoora' && (val.detected_variety.toLowerCase().includes('sindhoora') || val.detected_variety.includes('சிந்தூரா'))) ||
-                (v.id === 'royal_delicious' && (val.detected_variety.toLowerCase().includes('royal') || val.detected_variety.includes('டெலிஷியஸ்'))) ||
-                (v.id === 'ambri' && (val.detected_variety.toLowerCase().includes('ambri') || val.detected_variety.includes('அம்ரி'))) ||
-                (v.id === 'granny_smith' && (val.detected_variety.toLowerCase().includes('granny') || val.detected_variety.includes('ஸ்மித்'))) ||
-                (v.id === 'red_lady' && (val.detected_variety.toLowerCase().includes('red lady') || val.detected_variety.includes('ரெட் லேடி'))) ||
-                (v.id === 'co7' && (val.detected_variety.toLowerCase().includes('co-7') || val.detected_variety.includes('கோ-7')))
+                (v.id === 'sevazhai' && (val.detected_variety.toLowerCase().includes('red banana') || val.detected_variety.includes(''))) ||
+                (v.id === 'sindhoora' && (val.detected_variety.toLowerCase().includes('sindhoora') || val.detected_variety.includes(''))) ||
+                (v.id === 'royal_delicious' && (val.detected_variety.toLowerCase().includes('royal') || val.detected_variety.includes(''))) ||
+                (v.id === 'ambri' && (val.detected_variety.toLowerCase().includes('ambri') || val.detected_variety.includes(''))) ||
+                (v.id === 'granny_smith' && (val.detected_variety.toLowerCase().includes('granny') || val.detected_variety.includes(''))) ||
+                (v.id === 'red_lady' && (val.detected_variety.toLowerCase().includes('red lady') || val.detected_variety.includes(' '))) ||
+                (v.id === 'co7' && (val.detected_variety.toLowerCase().includes('co-7') || val.detected_variety.includes('-7')))
               );
               if (match) setSelectedVariety(match);
             }
@@ -238,77 +233,77 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
     setAnalysisResult(null);
     setGanSimResults({});
     setErrorMessage(null);
-    
+
     if (sample.id === 'banana_red_sevazhai') {
       const sevazhaiVar = selectedFruit.varieties.find(v => v.id === 'sevazhai');
       if (sevazhaiVar) {
         setSelectedVariety(sevazhaiVar);
-        setAutoDetectedVariety(`${sevazhaiVar.name} (${sevazhaiVar.tamilName})`);
+        setAutoDetectedVariety(sevazhaiVar.name);
       }
     } else if (sample.id === 'mango_sindhoora') {
       const sindhooraVar = selectedFruit.varieties.find(v => v.id === 'sindhoora');
       if (sindhooraVar) {
         setSelectedVariety(sindhooraVar);
-        setAutoDetectedVariety(`${sindhooraVar.name} (${sindhooraVar.tamilName})`);
+        setAutoDetectedVariety(sindhooraVar.name);
       }
     } else if (sample.id === 'apple_ripe') {
       const appleVar = selectedFruit.varieties.find(v => v.id === 'royal_delicious');
       if (appleVar) {
         setSelectedVariety(appleVar);
-        setAutoDetectedVariety(`${appleVar.name} (${appleVar.tamilName})`);
+        setAutoDetectedVariety(appleVar.name);
       }
     } else if (sample.id === 'apple_unripe') {
       const appleVar = selectedFruit.varieties.find(v => v.id === 'granny_smith');
       if (appleVar) {
         setSelectedVariety(appleVar);
-        setAutoDetectedVariety(`${appleVar.name} (${appleVar.tamilName})`);
+        setAutoDetectedVariety(appleVar.name);
       }
     } else if (sample.id === 'orange_ripe') {
       const orangeVar = selectedFruit.varieties.find(v => v.id === 'nagpur');
       if (orangeVar) {
         setSelectedVariety(orangeVar);
-        setAutoDetectedVariety(`${orangeVar.name} (${orangeVar.tamilName})`);
+        setAutoDetectedVariety(orangeVar.name);
       }
     } else if (sample.id === 'guava_ripe') {
       const guavaVar = selectedFruit.varieties.find(v => v.id === 'allahabad_safeda');
       if (guavaVar) {
         setSelectedVariety(guavaVar);
-        setAutoDetectedVariety(`${guavaVar.name} (${guavaVar.tamilName})`);
+        setAutoDetectedVariety(guavaVar.name);
       }
     } else if (sample.id === 'pomegranate_ripe') {
       const pomVar = selectedFruit.varieties.find(v => v.id === 'bhagwa');
       if (pomVar) {
         setSelectedVariety(pomVar);
-        setAutoDetectedVariety(`${pomVar.name} (${pomVar.tamilName})`);
+        setAutoDetectedVariety(pomVar.name);
       }
     } else if (sample.id === 'watermelon_ripe') {
       const wmVar = selectedFruit.varieties.find(v => v.id === 'kiran');
       if (wmVar) {
         setSelectedVariety(wmVar);
-        setAutoDetectedVariety(`${wmVar.name} (${wmVar.tamilName})`);
+        setAutoDetectedVariety(wmVar.name);
       }
     } else if (sample.id === 'papaya_ripe') {
       const papayaVar = selectedFruit.varieties.find(v => v.id === 'red_lady') || selectedFruit.varieties[0];
       if (papayaVar) {
         setSelectedVariety(papayaVar);
-        setAutoDetectedVariety(`${papayaVar.name} (${papayaVar.tamilName})`);
+        setAutoDetectedVariety(papayaVar.name);
       }
     } else if (sample.id === 'papaya_unripe') {
       const papayaVar = selectedFruit.varieties.find(v => v.id === 'co7') || selectedFruit.varieties[0];
       if (papayaVar) {
         setSelectedVariety(papayaVar);
-        setAutoDetectedVariety(`${papayaVar.name} (${papayaVar.tamilName})`);
+        setAutoDetectedVariety(papayaVar.name);
       }
     } else if (sample.id === 'test_plant_leaf' || sample.id === 'test_tree_branch') {
-      setAutoDetectedVariety("Plant Leaf / Foliage Specimen (பச்சை இலை)");
+      setAutoDetectedVariety("Plant Leaf / Foliage Specimen ( )");
     } else if (sample.id === 'test_dragon_fruit') {
-      setAutoDetectedVariety("Dragon Fruit / Exotic Specimen (டிராகன் பழம்)");
+      setAutoDetectedVariety("Dragon Fruit / Exotic Specimen ( )");
     } else if (sample.id === 'test_potato') {
-      setAutoDetectedVariety("Potato Red / Dataset Class (உருளைக்கிழங்கு)");
+      setAutoDetectedVariety("Potato Red / Dataset Class ()");
     } else if (sample.id === 'test_phone') {
-      setAutoDetectedVariety("Smartphone / Non-Botanical (தொலைபேசி)");
+      setAutoDetectedVariety("Smartphone / Non-Botanical ()");
     } else if (sample.id === 'test_blurred') {
-      setAutoDetectedVariety("Blurred / Uncertain Specimen (தெளிவற்ற படம்)");
+      setAutoDetectedVariety("Blurred / Uncertain Specimen ( )");
     } else {
       setAutoDetectedVariety(null);
     }
@@ -318,7 +313,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       setActiveModal({
         type: 'plant_leaf',
         title: sample.id === 'test_tree_branch' ? 'Tree Branch & Foliage Detected' : 'Plant / Foliage Specimen Detected',
-        tamilTitle: 'தாவர இலை / கிளை மாதிரி',
         message: 'This diagnostic specimen contains plant leaves or vegetative foliage rather than a harvested fruit.',
         preview: sample.img,
         confidence: 98.5
@@ -327,7 +321,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       setActiveModal({
         type: 'non_fruit',
         title: 'No Fruit Detected',
-        tamilTitle: 'பழம் அல்லாத பொருள்',
         message: 'The uploaded image contains an electronic device (Smartphone). Please upload a clear photograph of an agricultural fruit.',
         preview: sample.img,
         confidence: 95.0
@@ -336,7 +329,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       setActiveModal({
         type: 'supported_nonfruit_class',
         title: 'Supported Non-Fruit Class: Potato Red',
-        tamilTitle: 'பழம் அல்லாத தரவுத்தொகுப்பு வகுப்பு (உருளைக்கிழங்கு)',
         detectedClass: 'Potato Red',
         message: 'Potato Red is catalogued in Fruits-360 as an agricultural crop, but it is a tuber/vegetable rather than a fresh fruit. Fruit Twin ripening pipelines are calibrated for fruits.',
         preview: sample.img,
@@ -347,7 +339,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       setActiveModal({
         type: 'uncertain',
         title: 'Image Uncertain — Please Try Again',
-        tamilTitle: 'தெளிவற்ற படம் — மீண்டும் முயற்சிக்கவும்',
         message: 'Fruit Twin could not confidently identify this image. The photo is severely blurred or low-contrast. Please upload a clearer photograph showing the fruit.',
         preview: sample.img,
         confidence: 32.5
@@ -355,7 +346,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
     } else if (sample.type === 'unsupported_fruit' || sample.id === 'test_dragon_fruit') {
       setActiveModal({
         type: 'unsupported_fruit',
-        candidateName: 'Dragon Fruit (பித்தாயா / டிராகன் பழம்)',
+        candidateName: 'Dragon Fruit ( /  )',
         message: 'This diagnostic specimen is recognized as Dragon Fruit, which is outside the 8 verified agricultural fruits.',
         preview: sample.img,
         confidence: 94.0
@@ -376,7 +367,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         });
       }
     }
-    
+
     try {
       const blob = await (await fetch(sample.img)).blob();
       const file = new File([blob], `${sample.id}.svg`, { type: 'image/svg+xml' });
@@ -391,7 +382,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
     if (!targetFruit) return;
 
     setSelectedFruit(targetFruit);
-    setSelectedVariety(targetFruit.varieties?.[0] || { id: 'default', name: targetFruit.name, tamilName: '' });
+    setSelectedVariety(targetFruit.varieties?.[0] || { id: 'default', name: targetFruit.name,  });
     setAutoDetectedVariety(null);
     setAnalysisResult(null);
     setGanSimResults({});
@@ -415,16 +406,16 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         const data = await analyzeMango(uploadPayload, temperature, humidity, targetFruit.id);
         if (data.detected_variety) {
           setAutoDetectedVariety(data.detected_variety);
-          const match = targetFruit.varieties?.find(v => 
-            data.detected_variety.toLowerCase().includes(v.id) || 
+          const match = targetFruit.varieties?.find(v =>
+            data.detected_variety.toLowerCase().includes(v.id) ||
             data.detected_variety.toLowerCase().includes(v.name.toLowerCase()) ||
-            (v.id === 'sevazhai' && (data.detected_variety.toLowerCase().includes('red banana') || data.detected_variety.includes('செவ்வாழை'))) ||
-            (v.id === 'sindhoora' && (data.detected_variety.toLowerCase().includes('sindhoora') || data.detected_variety.includes('சிந்தூரா'))) ||
-            (v.id === 'royal_delicious' && (data.detected_variety.toLowerCase().includes('royal') || data.detected_variety.includes('டெலிஷியஸ்'))) ||
-            (v.id === 'ambri' && (data.detected_variety.toLowerCase().includes('ambri') || data.detected_variety.includes('அம்ரி'))) ||
-            (v.id === 'granny_smith' && (data.detected_variety.toLowerCase().includes('granny') || data.detected_variety.includes('ஸ்மித்'))) ||
-            (v.id === 'red_lady' && (data.detected_variety.toLowerCase().includes('red lady') || data.detected_variety.includes('ரெட் லேடி'))) ||
-            (v.id === 'co7' && (data.detected_variety.toLowerCase().includes('co-7') || data.detected_variety.includes('கோ-7')))
+            (v.id === 'sevazhai' && (data.detected_variety.toLowerCase().includes('red banana') || data.detected_variety.includes(''))) ||
+            (v.id === 'sindhoora' && (data.detected_variety.toLowerCase().includes('sindhoora') || data.detected_variety.includes(''))) ||
+            (v.id === 'royal_delicious' && (data.detected_variety.toLowerCase().includes('royal') || data.detected_variety.includes(''))) ||
+            (v.id === 'ambri' && (data.detected_variety.toLowerCase().includes('ambri') || data.detected_variety.includes(''))) ||
+            (v.id === 'granny_smith' && (data.detected_variety.toLowerCase().includes('granny') || data.detected_variety.includes(''))) ||
+            (v.id === 'red_lady' && (data.detected_variety.toLowerCase().includes('red lady') || data.detected_variety.includes(' '))) ||
+            (v.id === 'co7' && (data.detected_variety.toLowerCase().includes('co-7') || data.detected_variety.includes('-7')))
           );
           if (match) setSelectedVariety(match);
         }
@@ -457,21 +448,21 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       }
 
       const data = await analyzeMango(fileToUpload, temperature, humidity, selectedFruit.id);
-      
+
       // Auto-detected variety handling
       if (data.detected_variety) {
         setAutoDetectedVariety(data.detected_variety);
         // Find match in varieties array
-        const match = selectedFruit.varieties.find(v => 
-          data.detected_variety.toLowerCase().includes(v.id) || 
+        const match = selectedFruit.varieties.find(v =>
+          data.detected_variety.toLowerCase().includes(v.id) ||
           data.detected_variety.toLowerCase().includes(v.name.toLowerCase()) ||
-          (v.id === 'sevazhai' && (data.detected_variety.toLowerCase().includes('red banana') || data.detected_variety.includes('செவ்வாழை'))) ||
-          (v.id === 'sindhoora' && (data.detected_variety.toLowerCase().includes('sindhoora') || data.detected_variety.includes('சிந்தூரா'))) ||
-          (v.id === 'royal_delicious' && (data.detected_variety.toLowerCase().includes('royal') || data.detected_variety.includes('டெலிஷியஸ்'))) ||
-          (v.id === 'ambri' && (data.detected_variety.toLowerCase().includes('ambri') || data.detected_variety.includes('அம்ரி'))) ||
-          (v.id === 'granny_smith' && (data.detected_variety.toLowerCase().includes('granny') || data.detected_variety.includes('ஸ்மித்'))) ||
-          (v.id === 'red_lady' && (data.detected_variety.toLowerCase().includes('red lady') || data.detected_variety.includes('ரெட் லேடி'))) ||
-          (v.id === 'co7' && (data.detected_variety.toLowerCase().includes('co-7') || data.detected_variety.includes('கோ-7')))
+          (v.id === 'sevazhai' && (data.detected_variety.toLowerCase().includes('red banana') || data.detected_variety.includes(''))) ||
+          (v.id === 'sindhoora' && (data.detected_variety.toLowerCase().includes('sindhoora') || data.detected_variety.includes(''))) ||
+          (v.id === 'royal_delicious' && (data.detected_variety.toLowerCase().includes('royal') || data.detected_variety.includes(''))) ||
+          (v.id === 'ambri' && (data.detected_variety.toLowerCase().includes('ambri') || data.detected_variety.includes(''))) ||
+          (v.id === 'granny_smith' && (data.detected_variety.toLowerCase().includes('granny') || data.detected_variety.includes(''))) ||
+          (v.id === 'red_lady' && (data.detected_variety.toLowerCase().includes('red lady') || data.detected_variety.includes(' '))) ||
+          (v.id === 'co7' && (data.detected_variety.toLowerCase().includes('co-7') || data.detected_variety.includes('-7')))
         );
         if (match) {
           setSelectedVariety(match);
@@ -483,7 +474,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         setActiveModal({
           type: 'uncertain',
           title: data.uncertain_validation?.title || 'Image Uncertain — Please Try Again',
-          tamilTitle: 'தெளிவற்ற படம் — மீண்டும் முயற்சிக்கவும்',
           message: data.uncertain_validation?.message || data.status_message,
           preview: imagePreview,
           confidence: data.confidence
@@ -492,7 +482,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         setActiveModal({
           type: 'plant_leaf',
           title: data.plant_validation?.title || 'Plant / Foliage Detected',
-          tamilTitle: 'தாவர இலை கண்டறியப்பட்டது',
           message: data.plant_validation?.message || data.status_message,
           preview: imagePreview,
           confidence: data.confidence
@@ -501,7 +490,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         setActiveModal({
           type: 'supported_nonfruit_class',
           title: data.nonfruit_dataset_validation?.title || 'Supported Non-Fruit Dataset Class',
-          tamilTitle: 'பழம் அல்லாத தரவுத்தொகுப்பு வகுப்பு',
           detectedClass: data.nonfruit_dataset_validation?.detected_class,
           message: data.nonfruit_dataset_validation?.message || data.status_message,
           preview: imagePreview,
@@ -512,7 +500,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         setActiveModal({
           type: 'non_fruit',
           title: 'No Fruit Detected',
-          tamilTitle: 'பழம் அல்லாத பொருள்',
           message: data.status_message,
           preview: imagePreview,
           confidence: data.confidence
@@ -531,7 +518,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         setActiveModal({
           type: 'mismatch',
           detectedFruitId: data.fruit_validation.detected_fruit,
-          detectedFruit: detectedFruitObj || { id: data.fruit_validation.detected_fruit, name: data.fruit_validation.detected_fruit_name, icon: data.fruit_validation.detected_fruit_icon, tamilName: data.fruit_validation.detected_fruit_tamil, varieties: [] },
+          detectedFruit: detectedFruitObj || { id: data.fruit_validation.detected_fruit, name: data.fruit_validation.detected_fruit_name, icon: data.fruit_validation.detected_fruit_icon, varieties: [] },
           detectedVariety: data.detected_variety,
           confidence: data.confidence,
           currentFruit: selectedFruit,
@@ -576,16 +563,16 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
 
         if (data.detected_variety) {
           setAutoDetectedVariety(data.detected_variety);
-          const match = targetFruit.varieties.find(v => 
-            data.detected_variety.toLowerCase().includes(v.id) || 
+          const match = targetFruit.varieties.find(v =>
+            data.detected_variety.toLowerCase().includes(v.id) ||
             data.detected_variety.toLowerCase().includes(v.name.toLowerCase()) ||
-            (v.id === 'sevazhai' && (data.detected_variety.toLowerCase().includes('red banana') || data.detected_variety.includes('செவ்வாழை'))) ||
-            (v.id === 'sindhoora' && (data.detected_variety.toLowerCase().includes('sindhoora') || data.detected_variety.includes('சிந்தூரா'))) ||
-            (v.id === 'royal_delicious' && (data.detected_variety.toLowerCase().includes('royal') || data.detected_variety.includes('டெலிஷியஸ்'))) ||
-            (v.id === 'ambri' && (data.detected_variety.toLowerCase().includes('ambri') || data.detected_variety.includes('அம்ரி'))) ||
-            (v.id === 'granny_smith' && (data.detected_variety.toLowerCase().includes('granny') || data.detected_variety.includes('ஸ்மித்'))) ||
-            (v.id === 'red_lady' && (data.detected_variety.toLowerCase().includes('red lady') || data.detected_variety.includes('ரெட் லேடி'))) ||
-            (v.id === 'co7' && (data.detected_variety.toLowerCase().includes('co-7') || data.detected_variety.includes('கோ-7')))
+            (v.id === 'sevazhai' && (data.detected_variety.toLowerCase().includes('red banana') || data.detected_variety.includes(''))) ||
+            (v.id === 'sindhoora' && (data.detected_variety.toLowerCase().includes('sindhoora') || data.detected_variety.includes(''))) ||
+            (v.id === 'royal_delicious' && (data.detected_variety.toLowerCase().includes('royal') || data.detected_variety.includes(''))) ||
+            (v.id === 'ambri' && (data.detected_variety.toLowerCase().includes('ambri') || data.detected_variety.includes(''))) ||
+            (v.id === 'granny_smith' && (data.detected_variety.toLowerCase().includes('granny') || data.detected_variety.includes(''))) ||
+            (v.id === 'red_lady' && (data.detected_variety.toLowerCase().includes('red lady') || data.detected_variety.includes(' '))) ||
+            (v.id === 'co7' && (data.detected_variety.toLowerCase().includes('co-7') || data.detected_variety.includes('-7')))
           );
           if (match) {
             setSelectedVariety(match);
@@ -642,7 +629,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
-      
+
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800/80 pb-6 mb-8 gap-4">
         <div>
@@ -650,7 +637,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
             <span className="text-xs font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20 uppercase tracking-wider">
               Variety Auto-Detection Pipeline Active
             </span>
-            <span className="text-xs font-mono text-slate-400">| Red Banana (செவ்வாழை) & Indian Cultivars</span>
+            <span className="text-xs font-mono text-slate-400">| Red Banana () & Indian Cultivars</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1 font-mono tracking-tight">
             Fruit Ripening & Variety Classification Engine
@@ -690,11 +677,11 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
 
       {/* Control Workspace */}
       <div className="glass-card rounded-2xl p-6 border border-slate-800/80 mb-12 shadow-xl">
-        
+
         {/* Fruit Category Tabs */}
         <div className="mb-6 pb-4 border-b border-slate-800">
           <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">
-            Select Fruit Category (பழங்களின் வகைகள்):
+            Select Fruit Category ( ):
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-2">
             {ALL_FRUITS.map(f => (
@@ -710,7 +697,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
               >
                 <span className="text-xl">{f.icon}</span>
                 <span className="truncate">{f.name}</span>
-                <span className="text-[10px] font-sans opacity-75 truncate">{f.tamilName}</span>
               </button>
             ))}
           </div>
@@ -795,7 +781,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left Column: Image Viewport & Samples (7 Cols) */}
           <div className="lg:col-span-7">
             <div className="flex items-center justify-between mb-3">
@@ -816,12 +802,12 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                       className="max-h-64 object-contain rounded-lg p-2"
                     />
                   </div>
-                  
+
                   <div className="mt-3 flex flex-col sm:flex-row items-center gap-2 text-xs font-mono">
                     {analysisResult?.is_fruit_mismatch ? (
                       <div className="flex items-center gap-2 text-amber-400 bg-amber-950/60 px-3 py-1.5 rounded border border-amber-500/40 font-bold animate-pulse">
                         <AlertTriangle className="w-4 h-4 text-amber-400" />
-                        <span>Warning: Visual features match {analysisResult.fruit_validation?.detected_fruit_name} ({analysisResult.fruit_validation?.detected_fruit_tamil})</span>
+                        <span>Warning: Visual features match {analysisResult.fruit_validation?.detected_fruit_name}</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 text-emerald-400 bg-slate-900 px-3 py-1.5 rounded border border-slate-800 font-bold">
@@ -834,15 +820,15 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   </div>
                 </div>
               ) : (
-                <div 
+                <div
                   onClick={() => fileInputRef.current?.click()}
                   className="flex flex-col items-center py-10 cursor-pointer text-center group"
                 >
                   <div className="w-14 h-14 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 mb-3 group-hover:border-emerald-500/50 transition-colors">
                     <Upload className="w-6 h-6" />
                   </div>
-                  <p className="text-sm font-bold text-white font-mono">Upload {selectedFruit.name} Photo ({selectedFruit.tamilName})</p>
-                  <p className="text-xs text-slate-400 mt-1">AI automatically identifies Red Banana (செவ்வாழை), Poovan, Nendran, etc.</p>
+                  <p className="text-sm font-bold text-white font-mono">Upload {selectedFruit.name} Photo</p>
+                  <p className="text-xs text-slate-400 mt-1">AI automatically identifies Red Banana (), Poovan, Nendran, etc.</p>
                 </div>
               )}
             </div>
@@ -881,7 +867,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
 
           {/* Right Column: Variety Selector & Environmental Form (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
-            
+
             {/* Variety Selector */}
             <div>
               <div className="flex items-center justify-between mb-2">
@@ -908,7 +894,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   >
                     <div className="font-bold text-xs flex items-center justify-between">
                       <span>{v.name}</span>
-                      <span className="text-[10px] text-emerald-400 font-sans">{v.tamilName}</span>
                     </div>
                     <p className="text-[10px] text-slate-400 truncate mt-0.5">{v.origin.split('/')[0]}</p>
                   </button>
@@ -1001,7 +986,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       {/* RESULT PAGE REPORT */}
       {analysisResult && (
         <div className="space-y-10 animate-fade-in">
-          
+
           {/* 1. PLANT / LEAF / FOLIAGE DETECTED BANNER */}
           {analysisResult.is_plant_or_leaf && (
             <div className="bg-gradient-to-r from-emerald-950/90 via-slate-900 to-teal-950/90 border-2 border-emerald-500 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
@@ -1102,7 +1087,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                       className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-purple-400 text-xs font-mono font-bold text-slate-200 hover:text-white flex items-center gap-1.5 transition-all"
                     >
                       <span>{f.icon}</span>
-                      <span>{f.name} ({f.tamilName})</span>
                     </button>
                   ))}
                 </div>
@@ -1139,14 +1123,14 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                     </span>
                     <span className="text-xs bg-amber-500/20 text-amber-200 px-2.5 py-0.5 rounded-full font-mono border border-amber-500/40 font-bold flex items-center gap-1.5">
                       <span>{analysisResult.fruit_validation.detected_fruit_icon}</span>
-                      <span>Detected: {analysisResult.fruit_validation.detected_fruit_name} ({analysisResult.fruit_validation.detected_fruit_tamil})</span>
+                      <span>Detected: {analysisResult.fruit_validation.detected_fruit_name}</span>
                     </span>
                   </div>
                   <p className="text-sm text-amber-100 font-medium leading-relaxed max-w-3xl">
                     {analysisResult.fruit_validation.mismatch_message}
                   </p>
                   <p className="text-xs text-amber-300/70 mt-1">
-                    You uploaded this in the {selectedFruit.name} ({selectedFruit.tamilName}) workspace. Click the button to switch to the correct category and calculate precise parameters.
+                    You uploaded this in the {selectedFruit.name} workspace. Click the button to switch to the correct category and calculate precise parameters.
                   </p>
                 </div>
               </div>
@@ -1156,7 +1140,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   onClick={() => setActiveModal({
                     type: 'mismatch',
                     detectedFruitId: analysisResult.fruit_validation.detected_fruit,
-                    detectedFruit: ALL_FRUITS.find(f => f.id === analysisResult.fruit_validation.detected_fruit) || { id: analysisResult.fruit_validation.detected_fruit, name: analysisResult.fruit_validation.detected_fruit_name, icon: analysisResult.fruit_validation.detected_fruit_icon, tamilName: analysisResult.fruit_validation.detected_fruit_tamil, varieties: [] },
+                    detectedFruit: ALL_FRUITS.find(f => f.id === analysisResult.fruit_validation.detected_fruit) || { id: analysisResult.fruit_validation.detected_fruit, name: analysisResult.fruit_validation.detected_fruit_name, icon: analysisResult.fruit_validation.detected_fruit_icon, varieties: [] },
                     detectedVariety: analysisResult.detected_variety,
                     confidence: analysisResult.confidence,
                     currentFruit: selectedFruit,
@@ -1227,13 +1211,13 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   {selectedFruit.name} Telemetry & Variety Report
                 </h2>
                 <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20 font-bold">
-                  Detected Variety: {autoDetectedVariety || `${selectedVariety.name} (${selectedVariety.tamilName})`}
+                  Detected Variety: {autoDetectedVariety || selectedVariety.name}
                 </span>
               </div>
 
           {/* 1. UPLOADED INPUT & 2. CURRENT RIPENESS & 3. ENVIRONMENTAL INPUT */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
+
             {/* 1. Uploaded Input & Fruits-360 Identification */}
             <div className="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
               <div>
@@ -1249,7 +1233,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                     {analysisResult.fruit_identification?.is_reliable !== false ? '✓ Reliable' : '⚠️ Uncertain'}
                   </span>
                 </div>
-                
+
                 <div className="w-full h-44 rounded-lg bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center p-2 mb-3">
                   <img src={imagePreview} alt={`Uploaded ${selectedFruit.name}`} className="h-full object-contain" />
                 </div>
@@ -1330,9 +1314,9 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                         <span className="text-cyan-400 font-bold">{analysisResult.rawripe_confidence || 94.0}%</span>
                       </div>
                       <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
-                        <div 
-                          className="h-full bg-gradient-to-r from-amber-400 to-emerald-400 rounded-full" 
-                          style={{ width: `${analysisResult.rawripe_confidence || 90.0}%` }} 
+                        <div
+                          className="h-full bg-gradient-to-r from-amber-400 to-emerald-400 rounded-full"
+                          style={{ width: `${analysisResult.rawripe_confidence || 90.0}%` }}
                         />
                       </div>
                     </div>
@@ -1475,7 +1459,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
 
             {/* Timeline Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-4">
-              
+
               {/* TODAY */}
               <div className="bg-slate-950 border border-emerald-500/40 rounded-xl p-3 flex flex-col items-center">
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
@@ -1704,18 +1688,18 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
           INTERACTIVE AI MODAL POPUPS (MISMATCH, PLANT LEAF, NON-FRUIT, UNSUPPORTED)
          ========================================================================= */}
       {activeModal && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
         >
-          <div 
+          <div
             className="relative w-full max-w-2xl bg-slate-900 border-2 rounded-2xl shadow-2xl overflow-hidden font-mono text-left transition-all transform scale-100"
             style={{
-              borderColor: activeModal.type === 'mismatch' ? '#f59e0b' : 
-                           activeModal.type === 'plant_leaf' ? '#10b981' : 
-                           activeModal.type === 'unsupported_fruit' ? '#a855f7' : 
-                           activeModal.type === 'supported_nonfruit_class' ? '#06b6d4' : 
+              borderColor: activeModal.type === 'mismatch' ? '#f59e0b' :
+                           activeModal.type === 'plant_leaf' ? '#10b981' :
+                           activeModal.type === 'unsupported_fruit' ? '#a855f7' :
+                           activeModal.type === 'supported_nonfruit_class' ? '#06b6d4' :
                            activeModal.type === 'uncertain' ? '#94a3b8' : '#ef4444'
             }}
           >
@@ -1738,12 +1722,12 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
 
                 <div>
                   <h3 className="text-sm sm:text-base font-extrabold text-white tracking-wide uppercase">
-                    {activeModal.type === 'mismatch' && 'Fruit Mismatch Detected | பழ வகை பொருந்தவில்லை'}
-                    {activeModal.type === 'plant_leaf' && 'Plant / Foliage Detected | தாவர இலை கண்டறியப்பட்டது'}
-                    {activeModal.type === 'unsupported_fruit' && 'Out-of-Dataset Fruit Specimen | வகைப்படுத்தப்படாத பழம்'}
-                    {activeModal.type === 'supported_nonfruit_class' && 'Dataset Class Detected (Non-Fruit) | பழம் அல்லாத பயிர் வகுப்பு'}
-                    {activeModal.type === 'uncertain' && 'Image Uncertain — Please Try Again | தெளிவற்ற படம்'}
-                    {activeModal.type === 'non_fruit' && 'No Supported Fruit Detected | பழம் கண்டறியப்படவில்லை'}
+                    {activeModal.type === 'mismatch' && 'Fruit Mismatch Detected |   '}
+                    {activeModal.type === 'plant_leaf' && 'Plant / Foliage Detected |   '}
+                    {activeModal.type === 'unsupported_fruit' && 'Out-of-Dataset Fruit Specimen |  '}
+                    {activeModal.type === 'supported_nonfruit_class' && 'Dataset Class Detected (Non-Fruit) |    '}
+                    {activeModal.type === 'uncertain' && 'Image Uncertain — Please Try Again |  '}
+                    {activeModal.type === 'non_fruit' && 'No Supported Fruit Detected |  '}
                   </h3>
                   <span className="text-[11px] opacity-80 block">
                     {activeModal.type === 'mismatch' && 'AI Computer Vision Pipeline Cross-Category Alert'}
@@ -1784,7 +1768,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                         <div className="text-sm font-extrabold text-white flex items-center gap-1.5">
                           <span>{activeModal.detectedFruit?.icon || '🍌'}</span>
                           <span>{activeModal.detectedFruit?.name}</span>
-                          <span className="text-xs text-amber-300">({activeModal.detectedFruit?.tamilName})</span>
                         </div>
                         {activeModal.detectedVariety && (
                           <span className="text-[11px] text-emerald-400 font-bold block mt-0.5">
@@ -1804,7 +1787,6 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                         <div className="text-sm font-extrabold text-slate-300 flex items-center gap-1.5">
                           <span>{activeModal.currentFruit?.icon}</span>
                           <span>{activeModal.currentFruit?.name}</span>
-                          <span className="text-xs text-slate-400">({activeModal.currentFruit?.tamilName})</span>
                         </div>
                         <span className="text-[11px] text-amber-400 font-bold block mt-0.5">
                           Pipeline Mismatch
@@ -1815,7 +1797,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   </div>
 
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                    You uploaded an image of a <strong className="text-amber-300 font-mono font-bold">{activeModal.detectedFruit?.name} ({activeModal.detectedFruit?.tamilName})</strong> while currently in the <strong className="text-slate-200 font-mono font-bold">{activeModal.currentFruit?.name} ({activeModal.currentFruit?.tamilName})</strong> workspace.
+                    You uploaded an image of a <strong className="text-amber-300 font-mono font-bold">{activeModal.detectedFruit?.name}</strong> while currently in the <strong className="text-slate-200 font-mono font-bold">{activeModal.currentFruit?.name}</strong> workspace.
                   </p>
                   <p className="text-xs text-slate-400 leading-relaxed font-sans">
                     Switching to the <strong className="text-emerald-400 font-mono">{activeModal.detectedFruit?.name} pipeline</strong> will load its dedicated RawRipe maturity classifier, calibrated Arrhenius shelf-life regression, and conditional GAN future appearance synthesizer.
@@ -2143,9 +2125,9 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       )}
 
       {/* Dataset Class Catalog Modal */}
-      <DatasetClassCatalogModal 
-        isOpen={isCatalogOpen} 
-        onClose={() => setIsCatalogOpen(false)} 
+      <DatasetClassCatalogModal
+        isOpen={isCatalogOpen}
+        onClose={() => setIsCatalogOpen(false)}
         onSelectFruit={(fruitId) => {
           const target = ALL_FRUITS.find(f => f.id === fruitId);
           if (target) {

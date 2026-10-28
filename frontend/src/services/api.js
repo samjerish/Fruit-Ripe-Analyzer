@@ -170,9 +170,3 @@ export async function calculateWhatIf(temperature, currentStage = 'Semi-Ripe', f
 
   return await res.json();
 }
-
-export async function fetchDatasetSummary() {
-  const res = await fetch(`${API_BASE}/dataset`);
-  if (!res.ok) throw new Error('Dataset fetch failed');
-  return await res.json();
-}

@@ -8,7 +8,7 @@ from models.base import get_fruit_model_paths, SUPPORTED_FRUITS
 class FruitRipenessModel:
     """
     Ripeness & Variety Classification Model supporting Mango, Banana, Papaya, and Apple.
-    Accurately detects both Ripeness Stage and Cultivar/Variety (e.g., Red Banana / Sevazhai / செவ்வாழை).
+    Accurately detects both Ripeness Stage and Cultivar/Variety (e.g., Red Banana / Sevazhai / ).
     """
     def __init__(self):
         self.models = {}
@@ -107,16 +107,16 @@ class FruitRipenessModel:
                 feat_red_ratio = features.get("red_ratio", 0.0) if features else 0.0
                 # If red is dominant in foreground or red ratio > 4% -> RED BANANA (Sevazhai)
                 if red_dom_ratio >= 0.04 or r_avg > g_avg * 1.04 or feat_red_ratio >= 0.04:
-                    detected_variety = "Red Banana (Sevazhai) (செவ்வாழை)"
+                    detected_variety = "Red Banana (Sevazhai) ()"
                     variety_confidence = 98.8
                 elif g_avg > r_avg * 1.1:
-                    detected_variety = "Grand Naine (G9) (கிராண்ட் நைன்)"
+                    detected_variety = "Grand Naine (G9) ( )"
                     variety_confidence = 94.0
                 elif r_avg > 72.0 and r_avg > g_avg + 6.0:
-                    detected_variety = "Nendran (நேந்திரன் வாழைப்பழம்)"
+                    detected_variety = "Nendran ( )"
                     variety_confidence = 93.5
                 elif not detected_variety or ("Red Banana" in detected_variety and red_dom_ratio < 0.03):
-                    detected_variety = "Poovan (பூவன் வாழைப்பழம்)"
+                    detected_variety = "Poovan ( )"
                     variety_confidence = 91.0
 
             elif fruit == "mango":
@@ -124,19 +124,19 @@ class FruitRipenessModel:
                 feat_green_ratio = features.get("green_ratio", 0.0) if features else 0.0
                 # True Red-blush (Sindhoora / Apple Mango):
                 if (red_dom_ratio >= 0.14 and r_avg > g_avg * 1.10) or (feat_red_ratio >= 0.14 and r_avg > g_avg * 1.10):
-                    detected_variety = "Sindhoora (Apple Mango) (சிந்தூரா / ஆப்பிள் மாம்பழம்)"
+                    detected_variety = "Sindhoora (Apple Mango) ( /  )"
                     variety_confidence = 98.4
                 elif g_avg > r_avg * 1.02 or feat_green_ratio > 0.40:
                     # Greenish-yellow skin -> Neelum
-                    detected_variety = "Neelum (நீலம்)"
+                    detected_variety = "Neelum ()"
                     variety_confidence = 94.5
                 elif r_avg > g_avg * 1.08:
                     # Warm golden saffron -> Alphonso
-                    detected_variety = "Alphonso (அல்போன்சா)"
+                    detected_variety = "Alphonso ()"
                     variety_confidence = 95.0
                 else:
                     # Classic bright yellow / balanced -> Banganapalli
-                    detected_variety = "Banganapalli (பங்கனபள்ளி)"
+                    detected_variety = "Banganapalli ()"
                     variety_confidence = 94.0
 
             elif fruit == "papaya":
@@ -145,13 +145,13 @@ class FruitRipenessModel:
                 feat_yellow_ratio = features.get("yellow_ratio", 0.0) if features else 0.0
                 # Red Lady (Taiwan 786) is the predominant South Indian commercial variety (mottled green-yellow)
                 if feat_yellow_ratio > 0.18 or (feat_green_ratio > 0.20 and feat_yellow_ratio > 0.15):
-                    detected_variety = "Red Lady (Taiwan 786) (ரெட் லேடி பப்பாளி)"
+                    detected_variety = "Red Lady (Taiwan 786) (  )"
                     variety_confidence = 96.0
                 elif feat_green_ratio > 0.50:
-                    detected_variety = "Coimbatore Co-7 / Co-8 (கோ-7 பப்பாளி)"
+                    detected_variety = "Coimbatore Co-7 / Co-8 (-7 )"
                     variety_confidence = 94.0
                 else:
-                    detected_variety = "Washington Papaya (வாஷிங்டன் பப்பாளி)"
+                    detected_variety = "Washington Papaya ( )"
                     variety_confidence = 92.0
 
             elif fruit == "apple":
@@ -161,15 +161,15 @@ class FruitRipenessModel:
                 # Apple Variety Calibration:
                 # 1. Granny Smith: Distinct vibrant green peel (green dominant, low red)
                 if feat_green_ratio > 0.35 and feat_red_ratio < 0.10:
-                    detected_variety = "Granny Smith (கிரானி ஸ்மித்)"
+                    detected_variety = "Granny Smith ( )"
                     variety_confidence = 96.5
                 # 2. Kashmiri Ambri: Sweet crisp apple with striped/blushed golden-red peel
                 elif (feat_yellow_ratio > 0.15 or feat_green_ratio > 0.15) and feat_red_ratio > 0.12:
-                    detected_variety = "Kashmiri Ambri (காஷ்மீரி அம்ரி)"
+                    detected_variety = "Kashmiri Ambri ( )"
                     variety_confidence = 95.0
                 # 3. Royal Delicious: Deep crimson / rich red blush
                 else:
-                    detected_variety = "Royal Delicious (ரொயல் டெலிஷியஸ்)"
+                    detected_variety = "Royal Delicious ( )"
                     variety_confidence = 96.0
 
             # 3. Ripeness Stage Classification

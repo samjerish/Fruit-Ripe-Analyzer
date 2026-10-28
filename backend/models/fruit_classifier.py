@@ -5,14 +5,14 @@ Features:
 2. Non-Fruit Object Detection (Rejects non-botanical items, everyday objects, noise)
 3. Unsupported / Exotic Fruit Detection (e.g., Dragon Fruit, Kiwi, Avocado, Pineapple)
 4. Accurate Multi-Fruit Recognition across all 8 Agricultural Fruits:
-   - Mango (மாம்பழம்)
-   - Banana (வாழைப்பழம்) - Including Red Banana / Sevazhai (செவ்வாழை)
-   - Papaya (பப்பாளி)
-   - Apple (ஆப்பிள்)
-   - Orange (ஆரஞ்சு)
-   - Guava (கொய்யா)
-   - Pomegranate (மாதுளை)
-   - Watermelon (தர்பூசணி)
+   - Mango ()
+   - Banana () - Including Red Banana / Sevazhai ()
+   - Papaya ()
+   - Apple ()
+   - Orange ()
+   - Guava ()
+   - Pomegranate ()
+   - Watermelon ()
 5. Cross-Tab Fruit Mismatch Detection: Accurately catches when a fruit is uploaded on the wrong tab.
 """
 
@@ -23,14 +23,14 @@ from typing import Dict, Any, Tuple, Optional
 SUPPORTED_FRUIT_SET = {"mango", "banana", "papaya", "apple", "orange", "guava", "pomegranate", "watermelon"}
 
 FRUIT_METADATA = {
-    "mango": {"name": "Mango", "tamil": "மாம்பழம்", "icon": "🥭", "default_variety": "Alphonso / Nam Dok Mai"},
-    "banana": {"name": "Banana", "tamil": "வாழைப்பழம்", "icon": "🍌", "default_variety": "Cavendish / Poovan"},
-    "papaya": {"name": "Papaya", "tamil": "பப்பாளி", "icon": "🍈", "default_variety": "Red Lady / CO-7"},
-    "apple": {"name": "Apple", "tamil": "ஆப்பிள்", "icon": "🍎", "default_variety": "Royal Delicious / Red Apple"},
-    "orange": {"name": "Orange", "tamil": "ஆரஞ்சு", "icon": "🍊", "default_variety": "Nagpur / Mandarin"},
-    "guava": {"name": "Guava", "tamil": "கொய்யா", "icon": "🍐", "default_variety": "Allahabad Safeda / Lucknow 49"},
-    "pomegranate": {"name": "Pomegranate", "tamil": "மாதுளை", "icon": "🔴", "default_variety": "Bhagwa / Ruby"},
-    "watermelon": {"name": "Watermelon", "tamil": "தர்பூசணி", "icon": "🍉", "default_variety": "Sugar Baby / Kiran"}
+    "mango": {"name": "Mango", "tamil": "", "icon": "🥭", "default_variety": "Alphonso / Nam Dok Mai"},
+    "banana": {"name": "Banana", "tamil": "", "icon": "🍌", "default_variety": "Cavendish / Poovan"},
+    "papaya": {"name": "Papaya", "tamil": "", "icon": "🍈", "default_variety": "Red Lady / CO-7"},
+    "apple": {"name": "Apple", "tamil": "", "icon": "🍎", "default_variety": "Royal Delicious / Red Apple"},
+    "orange": {"name": "Orange", "tamil": "", "icon": "🍊", "default_variety": "Nagpur / Mandarin"},
+    "guava": {"name": "Guava", "tamil": "", "icon": "🍐", "default_variety": "Allahabad Safeda / Lucknow 49"},
+    "pomegranate": {"name": "Pomegranate", "tamil": "", "icon": "🔴", "default_variety": "Bhagwa / Ruby"},
+    "watermelon": {"name": "Watermelon", "tamil": "", "icon": "🍉", "default_variety": "Sugar Baby / Kiran"}
 }
 
 def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = None) -> Tuple[str, float, Dict[str, Any]]:
@@ -215,10 +215,10 @@ def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = No
     is_grapes_berries = (b_mean > 0.32 and r_mean > 0.25 and g_mean < 0.25 and edge_density > 0.09)
 
     if is_dragon_fruit or is_kiwi or is_avocado or is_pineapple or is_grapes_berries:
-        candidate_name = "Dragon Fruit (பித்தாயா / டிராகன் பழம்)" if is_dragon_fruit else (
-            "Kiwi Fruit (கிவி பழம்)" if is_kiwi else (
-                "Avocado (வெண்ணெய் பழம்)" if is_avocado else (
-                    "Pineapple (அன்னாசிப்பழம்)" if is_pineapple else "Grapes / Berries (திராட்சை / பெர்ரி)"
+        candidate_name = "Dragon Fruit ( /  )" if is_dragon_fruit else (
+            "Kiwi Fruit ( )" if is_kiwi else (
+                "Avocado ( )" if is_avocado else (
+                    "Pineapple ()" if is_pineapple else "Grapes / Berries ( / )"
                 )
             )
         )
@@ -236,7 +236,7 @@ def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = No
     # =========================================================================
     # 4. BOTANICAL EVIDENCE COMPUTATION & MULTI-FRUIT CLASSIFICATION
     # =========================================================================
-    # --- RED BANANA (Sevazhai / செவ்வாழை) ---
+    # --- RED BANANA (Sevazhai / ) ---
     # True Red Banana has banana pulp flesh, high b_mean, or true crescent elongation with dark brownish-crimson peel
     is_red_banana = ((banana_flesh_dom > 0.035 and crimson_red_dom > 0.10 and b_mean > 0.28 and green_dom < 0.05 and r_mean > 0.50) or \
                     (elong > 2.40 and (aspect > 1.80 or aspect < 0.50) and crimson_red_dom > 0.50))
@@ -263,7 +263,7 @@ def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = No
 
     # --- APPLE (Red, Green, Yellow) ---
     is_red_apple = (pure_red > 0.25 or deep_crimson > 0.20) and (elong < 1.30) and (sat_mean > 0.35) and (g_mean >= b_mean) and (edge_density < 0.07 or elong < 1.25) and not is_orange and not is_pomegranate and not is_watermelon and not is_banana
-    is_green_apple = (pure_green > 0.22) and (elong < 1.30) and (g_mean > 0.40 and g_mean < 0.48) and not is_watermelon and not is_guava and not is_banana
+    is_green_apple = (pure_green > 0.22) and (elong < 1.40) and (aspect < 1.35) and (g_mean > 0.35) and not is_watermelon and not is_guava and not is_banana
     is_yellow_apple = (pure_yellow > 0.30) and (elong < 1.30) and not is_orange and not is_guava and not is_banana
     is_apple = is_red_apple or is_green_apple or is_yellow_apple
 
@@ -271,13 +271,17 @@ def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = No
     is_mango = (pure_yellow > 0.18 or pure_orange > 0.15 or (pure_green > 0.40 and g_mean >= 0.48)) and (1.00 <= elong <= 1.70) and (pale_white < 0.25) and not is_orange and not is_guava and not is_banana and not is_apple and not is_watermelon
 
     # --- PAPAYA ---
-    is_papaya = elong > 1.25 and pure_orange > 0.22 and sat_mean > 0.40 and not is_orange and not is_banana
+    is_red_mango = pure_red > 0.35 and pure_orange > 0.20 and aspect > 1.35
+    is_papaya = elong > 1.25 and (
+        (pure_orange > 0.22 and pure_red < 0.35 and sat_mean > 0.40) or
+        (pure_green > 0.18 and pure_yellow > 0.18 and aspect > 1.05)
+    ) and not is_orange and not is_banana
 
     # =========================================================================
     # 5. DECISION ENGINE: MULTI-FRUIT MISMATCH DETECTION & ACCURATE ASSIGNMENT
     # =========================================================================
     if is_banana:
-        variety_name = "Red Banana (Sevazhai / செவ்வாழை)" if is_red_banana else "Banana (Cavendish / Poovan)"
+        variety_name = "Red Banana (Sevazhai / )" if is_red_banana else "Banana (Cavendish / Poovan)"
         meta = {
             "object_type": "fruit",
             "is_fruit": True,
@@ -285,11 +289,6 @@ def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = No
             "is_red_banana": is_red_banana
         }
         return "banana", 97.5 if is_red_banana else 96.0, meta
-
-    if is_apple:
-        variety_name = "Royal Delicious / Red Apple" if is_red_apple else ("Granny Smith" if is_green_apple else "Golden Apple")
-        meta = {"object_type": "fruit", "is_fruit": True, "detected_variety": variety_name}
-        return "apple", 96.0, meta
 
     if is_orange:
         meta = {"object_type": "fruit", "is_fruit": True, "detected_variety": "Nagpur / Mandarin"}
@@ -314,5 +313,10 @@ def detect_fruit_category(image: Image.Image, expected_fruit: Optional[str] = No
     if is_mango:
         meta = {"object_type": "fruit", "is_fruit": True, "detected_variety": "Alphonso / Nam Dok Mai"}
         return "mango", 95.0, meta
+
+    if is_apple:
+        variety_name = "Royal Delicious / Red Apple" if is_red_apple else ("Granny Smith" if is_green_apple else "Golden Apple")
+        meta = {"object_type": "fruit", "is_fruit": True, "detected_variety": variety_name}
+        return "apple", 96.0, meta
 
     return None, 50.0, {}
