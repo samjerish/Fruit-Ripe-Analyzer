@@ -20,7 +20,7 @@ FruitTwin is an AI-powered agricultural digital twin platform that couples compu
 | **Unsupported Fruits** | Watermelon, Exotic specimens | None | Explicit: *"Fruit identified successfully. Ripeness prediction is not yet available for this fruit."* |
 | **Future Appearance Twin** | Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, Watermelon | FruitTwin cGAN | Conditional GAN Generator (Residual Stage Transfer) |
 | **Ripening Time** | Mango | Kasetsart University Storage Telemetry | GradientBoostingRegressor (MAE = 1.60 days at 25-28°C) |
-| **Ripening Time (Other)** | Banana, Apple, etc. | None | Explicit: *"Ripening-time estimation is not yet supported because validated training data is unavailable."* |
+| **Ripening Time (Other)** | Banana, Apple, etc. | None | Showcase forecast with fruit-specific temperature-adjusted estimates |
 
 ---
 
@@ -146,7 +146,7 @@ npm run dev
   - Returns generated image base64 with mandatory disclaimer: *"This image is an AI-generated simulation of future fruit maturation, not a physical photograph."*
 - `POST /api/predict-ripening-time`
   - Temperature in °C + fruit name.
-  - Returns estimated days (for mango) or honest message: *"Ripening-time estimation is not yet supported because validated training data is unavailable."*
+  - Returns calibrated mango estimates or clearly labeled showcase forecasts for other fruits
 - `POST /api/analyze`
   - End-to-end unified analysis endpoint for the dashboard.
 

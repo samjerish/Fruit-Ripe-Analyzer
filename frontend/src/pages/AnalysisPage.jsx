@@ -7,6 +7,8 @@ import RipenessBadge from '../components/RipenessBadge';
 import ModelStatusBanner from '../components/ModelStatusBanner';
 import DatasetClassCatalogModal from '../components/DatasetClassCatalogModal';
 
+const VISIBLE_FRUIT_IDS = ['mango', 'banana', 'apple', 'pomegranate', 'watermelon'];
+
 export default function AnalysisPage({ modelStatus, initialFruitId, initialSample, onClearSample }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -179,7 +181,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
             type: 'unsupported_fruit',
             title: 'Out-of-Dataset Fruit Specimen',
             candidateName: val.detected_category || val.detected_fruit,
-            message: val.message || 'Recognized fruit outside the 8 primary Fruit Twin pipelines.',
+            message: val.message || 'Recognized fruit outside the five primary Fruit Twin pipelines.',
             preview: url,
             confidence: val.confidence,
             topCandidates: val.top_three_candidates
@@ -228,6 +230,8 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
   };
 
   const handleLoadSample = async (sample) => {
+    const sampleFruit = ALL_FRUITS.find(f => sample.id.startsWith(f.id));
+    const fruitForSample = sampleFruit || selectedFruit;
     setImagePreview(sample.img);
     setTemperature(sample.temp);
     setAnalysisResult(null);
@@ -235,61 +239,61 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
     setErrorMessage(null);
 
     if (sample.id === 'banana_red_sevazhai') {
-      const sevazhaiVar = selectedFruit.varieties.find(v => v.id === 'sevazhai');
+      const sevazhaiVar = fruitForSample.varieties.find(v => v.id === 'sevazhai');
       if (sevazhaiVar) {
         setSelectedVariety(sevazhaiVar);
         setAutoDetectedVariety(sevazhaiVar.name);
       }
     } else if (sample.id === 'mango_sindhoora') {
-      const sindhooraVar = selectedFruit.varieties.find(v => v.id === 'sindhoora');
+      const sindhooraVar = fruitForSample.varieties.find(v => v.id === 'sindhoora');
       if (sindhooraVar) {
         setSelectedVariety(sindhooraVar);
         setAutoDetectedVariety(sindhooraVar.name);
       }
     } else if (sample.id === 'apple_ripe') {
-      const appleVar = selectedFruit.varieties.find(v => v.id === 'royal_delicious');
+      const appleVar = fruitForSample.varieties.find(v => v.id === 'royal_delicious');
       if (appleVar) {
         setSelectedVariety(appleVar);
         setAutoDetectedVariety(appleVar.name);
       }
     } else if (sample.id === 'apple_unripe') {
-      const appleVar = selectedFruit.varieties.find(v => v.id === 'granny_smith');
+      const appleVar = fruitForSample.varieties.find(v => v.id === 'granny_smith');
       if (appleVar) {
         setSelectedVariety(appleVar);
         setAutoDetectedVariety(appleVar.name);
       }
     } else if (sample.id === 'orange_ripe') {
-      const orangeVar = selectedFruit.varieties.find(v => v.id === 'nagpur');
+      const orangeVar = fruitForSample.varieties.find(v => v.id === 'nagpur');
       if (orangeVar) {
         setSelectedVariety(orangeVar);
         setAutoDetectedVariety(orangeVar.name);
       }
     } else if (sample.id === 'guava_ripe') {
-      const guavaVar = selectedFruit.varieties.find(v => v.id === 'allahabad_safeda');
+      const guavaVar = fruitForSample.varieties.find(v => v.id === 'allahabad_safeda');
       if (guavaVar) {
         setSelectedVariety(guavaVar);
         setAutoDetectedVariety(guavaVar.name);
       }
     } else if (sample.id === 'pomegranate_ripe') {
-      const pomVar = selectedFruit.varieties.find(v => v.id === 'bhagwa');
+      const pomVar = fruitForSample.varieties.find(v => v.id === 'bhagwa');
       if (pomVar) {
         setSelectedVariety(pomVar);
         setAutoDetectedVariety(pomVar.name);
       }
     } else if (sample.id === 'watermelon_ripe') {
-      const wmVar = selectedFruit.varieties.find(v => v.id === 'kiran');
+      const wmVar = fruitForSample.varieties.find(v => v.id === 'kiran');
       if (wmVar) {
         setSelectedVariety(wmVar);
         setAutoDetectedVariety(wmVar.name);
       }
     } else if (sample.id === 'papaya_ripe') {
-      const papayaVar = selectedFruit.varieties.find(v => v.id === 'red_lady') || selectedFruit.varieties[0];
+      const papayaVar = fruitForSample.varieties.find(v => v.id === 'red_lady') || fruitForSample.varieties[0];
       if (papayaVar) {
         setSelectedVariety(papayaVar);
         setAutoDetectedVariety(papayaVar.name);
       }
     } else if (sample.id === 'papaya_unripe') {
-      const papayaVar = selectedFruit.varieties.find(v => v.id === 'co7') || selectedFruit.varieties[0];
+      const papayaVar = fruitForSample.varieties.find(v => v.id === 'co7') || fruitForSample.varieties[0];
       if (papayaVar) {
         setSelectedVariety(papayaVar);
         setAutoDetectedVariety(papayaVar.name);
@@ -347,21 +351,21 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
       setActiveModal({
         type: 'unsupported_fruit',
         candidateName: 'Dragon Fruit ( /  )',
-        message: 'This diagnostic specimen is recognized as Dragon Fruit, which is outside the 8 verified agricultural fruits.',
+        message: 'This diagnostic specimen is recognized as Dragon Fruit, which is outside the five verified agricultural fruits.',
         preview: sample.img,
         confidence: 94.0
       });
     } else {
       // Check if sample belongs to a different fruit tab
       const sampleFruit = ALL_FRUITS.find(f => sample.id.startsWith(f.id));
-      if (sampleFruit && sampleFruit.id !== selectedFruit.id) {
+      if (sampleFruit && sampleFruit.id !== fruitForSample.id) {
         setActiveModal({
           type: 'mismatch',
           detectedFruitId: sampleFruit.id,
           detectedFruit: sampleFruit,
           detectedVariety: sample.label,
           confidence: 97.0,
-          currentFruit: selectedFruit,
+          currentFruit: fruitForSample,
           file: null,
           preview: sample.img
         });
@@ -369,8 +373,13 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
     }
 
     try {
-      const blob = await (await fetch(sample.img)).blob();
-      const file = new File([blob], `${sample.id}.svg`, { type: 'image/svg+xml' });
+      const response = await fetch(sample.img);
+      if (!response.ok) {
+        throw new Error(`Could not load sample image (${response.status})`);
+      }
+      const blob = await response.blob();
+      const extension = blob.type.split('/')[1] || 'jpg';
+      const file = new File([blob], `${sample.id}.${extension}`, { type: blob.type || 'image/jpeg' });
       setSelectedFile(file);
     } catch (err) {
       console.warn('Sample blob conversion fallback:', err);
@@ -626,6 +635,13 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
   };
 
   const currentSamples = MULTI_FRUIT_SAMPLES[selectedFruit.id] || MULTI_FRUIT_SAMPLES.banana;
+  const ripeningStages = ['Unripe', 'Semi-Ripe', 'Ripe', 'Overripe'];
+  const detectedStage = analysisResult?.ripeness_stage || 'Semi-Ripe';
+  const normalizedDetectedStage = detectedStage.toLowerCase().replace(/[\s-]/g, '');
+  const detectedStageIndex = Math.max(
+    0,
+    ripeningStages.findIndex(stage => normalizedDetectedStage.includes(stage.toLowerCase().replace(/[\s-]/g, '')))
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-mono">
@@ -684,7 +700,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
             Select Fruit Category ( ):
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-2">
-            {ALL_FRUITS.map(f => (
+            {ALL_FRUITS.filter(f => VISIBLE_FRUIT_IDS.includes(f.id)).map(f => (
               <button
                 key={f.id}
                 type="button"
@@ -865,47 +881,14 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
             </div>
           </div>
 
-          {/* Right Column: Variety Selector & Environmental Form (5 Cols) */}
+          {/* Right Column: Analysis Controls & Environmental Form (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
-
-            {/* Variety Selector */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                  2. Variety Detection & Manual Override
-                </label>
-                {autoDetectedVariety && (
-                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-                    AI Auto-Identified
-                  </span>
-                )}
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {selectedFruit.varieties.map((v) => (
-                  <button
-                    key={v.id}
-                    type="button"
-                    onClick={() => setSelectedVariety(v)}
-                    className={`p-2.5 rounded-xl border text-left transition-all ${
-                      selectedVariety.id === v.id
-                        ? 'bg-emerald-950/80 border-emerald-500/60 text-white shadow-md shadow-emerald-500/10'
-                        : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-900'
-                    }`}
-                  >
-                    <div className="font-bold text-xs flex items-center justify-between">
-                      <span>{v.name}</span>
-                    </div>
-                    <p className="text-[10px] text-slate-400 truncate mt-0.5">{v.origin.split('/')[0]}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
 
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                   <Thermometer className="w-4 h-4 text-amber-400" />
-                  3. Storage Temperature (°C)
+                  2. Storage Temperature (°C)
                 </label>
                 <span className="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                   Required
@@ -1007,7 +990,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                     {analysisResult.plant_validation?.message || "The AI computer vision pipeline analyzed this image and determined it contains vegetative foliage, plant leaves, or stems rather than a fruit specimen. Ripeness classification and Arrhenius shelf-life prediction require a clear photo of the harvested fruit itself."}
                   </p>
                   <p className="text-xs text-emerald-400 font-mono font-bold">
-                    💡 Action Required: Please upload or capture an image of the actual fruit (Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, or Watermelon).
+                    💡 Action Required: Please upload or capture an image of Mango, Banana, Apple, Pomegranate, or Watermelon.
                   </p>
                 </div>
               </div>
@@ -1061,10 +1044,10 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                     {analysisResult.unsupported_validation?.title || "Unsupported Fruit Specimen Detected"}
                   </h3>
                   <p className="text-sm text-slate-300 font-sans leading-relaxed max-w-3xl">
-                    {analysisResult.unsupported_validation?.message || "This specimen is recognized as a fruit, but is not currently in FruitTwin's verified agricultural database. Our shelf-life regression and cGAN future synthesis models are verified on 8 primary agricultural fruits."}
+                    {analysisResult.unsupported_validation?.message || "This specimen is recognized as a fruit, but is not currently in FruitTwin's verified agricultural database. Our shelf-life regression and cGAN future synthesis models are verified on five primary agricultural fruits."}
                   </p>
                   <p className="text-xs text-purple-300 font-mono font-bold">
-                    💡 Verified Agricultural Database: Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, and Watermelon.
+                    💡 Verified Agricultural Database: Mango, Banana, Apple, Pomegranate, and Watermelon.
                   </p>
                 </div>
               </div>
@@ -1159,6 +1142,47 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   <span>Switch to {analysisResult.fruit_validation.detected_fruit_name} & Re-Analyze</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+              </div>
+            </div>
+          )}
+
+          {(analysisResult.is_plant_or_leaf ||
+            analysisResult.is_non_fruit ||
+            analysisResult.is_uncertain ||
+            analysisResult.is_unsupported_fruit ||
+            analysisResult.is_supported_nonfruit_class) && (
+            <div className="glass-card rounded-2xl p-6 border border-slate-800">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                    Showcase Timeline
+                  </span>
+                  <h3 className="text-lg font-extrabold text-white mt-0.5">
+                    Ripening Timeline ({selectedFruit.name})
+                  </h3>
+                </div>
+                <span className="text-xs text-slate-400 bg-slate-950 px-3 py-1 rounded border border-slate-800">
+                  Illustrative Preview
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mb-4">
+                A visual timeline is shown for every upload. These stages are illustrative because this image was not eligible for a validated fruit-specific forecast.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                {[
+                  ['Today', 'Uploaded state', 'text-emerald-400', '22%'],
+                  ['+2 Days', 'Early transition', 'text-cyan-400', '48%'],
+                  ['+4 Days', 'Peak ripeness', 'text-amber-400', '76%'],
+                  ['+6 Days', 'Shelf-life window', 'text-rose-400', '100%']
+                ].map(([label, description, color, width]) => (
+                  <div key={label} className="bg-slate-950 rounded-xl border border-slate-800 p-4 text-center">
+                    <span className={`text-xs font-bold uppercase tracking-wider ${color}`}>{label}</span>
+                    <div className="h-2 rounded-full bg-slate-800 my-3 overflow-hidden">
+                      <div className={`h-full rounded-full ${color.replace('text-', 'bg-')}`} style={{ width }} />
+                    </div>
+                    <p className="text-[11px] text-slate-300">{description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -1399,18 +1423,21 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                 </h3>
               </div>
               <span className="text-xs text-slate-400 bg-slate-950 px-3 py-1 rounded border border-slate-800">
-                {analysisResult.ripening_time_supported ? 'Calibrated Telemetry' : 'Data Status'}
+                {analysisResult.is_showcase_estimate ? 'Showcase Estimate' : 'Calibrated Telemetry'}
               </span>
             </div>
 
-            {analysisResult.ripening_time_supported ? (
+            {analysisResult.estimated_days_to_ripe !== null && analysisResult.estimated_days_to_ripe !== undefined ? (
+              <>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center">
                   <p className="text-xs text-slate-400 uppercase mb-1">Estimated Time to Ripe</p>
                   <p className="text-4xl font-bold text-amber-400">
                     {analysisResult.estimated_days_to_ripe} <span className="text-sm text-slate-300">Days</span>
                   </p>
-                  <p className="text-[10px] text-slate-400 mt-2">Window to optimum °Brix (MAE: 1.6d)</p>
+                  <p className="text-[10px] text-slate-400 mt-2">
+                    {analysisResult.is_showcase_estimate ? 'Fruit-specific showcase estimate' : 'Window to optimum °Brix (MAE: 1.6d)'}
+                  </p>
                 </div>
 
                 <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center">
@@ -1429,11 +1456,53 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   <p className="text-[10px] text-slate-400 mt-2">At {temperature}°C ambient storage</p>
                 </div>
               </div>
+
+              <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950/80 p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    Fruit Life Cycle
+                  </span>
+                  <span className="text-[10px] text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded">
+                    Based on detected stage
+                  </span>
+                </div>
+                <div className="overflow-x-auto pb-2">
+                  <div className="min-w-[620px]">
+                    <div className="relative h-3 rounded-full bg-slate-800">
+                      <div
+                        className="absolute left-0 top-0 h-3 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500 transition-all"
+                        style={{ width: `${((detectedStageIndex + 1) / ripeningStages.length) * 100}%` }}
+                      />
+                      <div
+                        className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full border-2 border-white bg-amber-400 shadow-lg shadow-amber-500/40 transition-all"
+                        style={{ left: `calc(${(detectedStageIndex / (ripeningStages.length - 1)) * 100}% - 10px)` }}
+                        title={`Detected stage: ${detectedStage}`}
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 gap-3 mt-4">
+                      {ripeningStages.map((stage, index) => (
+                        <div key={stage} className="text-center">
+                          <p className={`text-xs font-bold ${index <= detectedStageIndex ? 'text-amber-300' : 'text-slate-500'}`}>
+                            {stage}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-1">
+                            {index === detectedStageIndex ? 'Detected now' : index < detectedStageIndex ? 'Passed' : `Next phase ${index - detectedStageIndex} step${index - detectedStageIndex === 1 ? '' : 's'}`}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-400 mt-3">
+                  The highlighted point is the stage predicted from the uploaded image. Forecast days estimate how long the fruit remains in its useful life at {temperature}°C.
+                </p>
+              </div>
+              </>
             ) : (
               <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-5 text-center space-y-2">
                 <Clock className="w-8 h-8 text-slate-400 mx-auto" />
                 <p className="text-sm font-bold text-amber-300">
-                  {analysisResult.ripening_time_message || "Ripening-time estimation is not yet supported because validated training data is unavailable."}
+                  {analysisResult.ripening_time_message || "Forecast data is unavailable for this upload."}
                 </p>
                 <p className="text-xs text-slate-400 max-w-xl mx-auto">
                   To avoid fabricating days-to-ripe, ripening-time regression is only reported for fruit varieties backed by real, multi-day biochemical storage telemetry (such as Nam Dok Mai Si Tong mango).
@@ -1732,7 +1801,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                   <span className="text-[11px] opacity-80 block">
                     {activeModal.type === 'mismatch' && 'AI Computer Vision Pipeline Cross-Category Alert'}
                     {activeModal.type === 'plant_leaf' && 'Harvested Fruit Specimen Required for Digital Twin'}
-                    {activeModal.type === 'unsupported_fruit' && 'Outside 8-Fruit Calibrated Agricultural Dataset'}
+                    {activeModal.type === 'unsupported_fruit' && 'Outside Five-Fruit Calibrated Agricultural Dataset'}
                     {activeModal.type === 'supported_nonfruit_class' && 'Fruits-360 Benchmark Dataset Class (Vegetable/Tuber/Grain)'}
                     {activeModal.type === 'uncertain' && 'Image Degraded, Severely Blurred, or Low Contrast'}
                     {activeModal.type === 'non_fruit' && 'Botanical Feature Extraction Failed'}
@@ -1853,7 +1922,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                       FruitTwin's digital twin engine evaluates pericarp skin color, surface reflectance, ripening biochemistry (TSS °Brix, Titratable Acidity), and GAN future decay simulation. These models require a clear photo of the fruit itself.
                     </p>
                     <p className="text-xs text-emerald-400 font-bold font-mono">
-                      Supported Fruits: Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, Watermelon.
+                      Supported Fruits: Mango, Banana, Apple, Pomegranate, Watermelon.
                     </p>
                   </div>
 
@@ -1955,7 +2024,7 @@ export default function AnalysisPage({ modelStatus, initialFruitId, initialSampl
                         Recognized as: {activeModal.candidateName || 'Exotic Fruit'}
                       </h4>
                       <p className="text-xs text-slate-300 font-sans leading-relaxed">
-                        Fruit recognized by Fruits-360, but FruitTwin's maturity and cGAN simulation models are trained on the 8 primary agricultural fruits.
+                        Fruit recognized by Fruits-360, but FruitTwin's maturity and cGAN simulation models are trained on the five primary agricultural fruits.
                       </p>
                     </div>
                   </div>

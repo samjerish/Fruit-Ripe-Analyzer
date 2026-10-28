@@ -31,10 +31,10 @@ export default function Navbar({ activeTab, setActiveTab, modelStatus }) {
                 Fruit<span className="text-emerald-400">Twin</span>
               </span>
               <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                8 Fruits Active + Plant Guard 🌿
+                5 Fruits Active + Plant Guard 🌿
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 hidden sm:block font-mono">Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, Watermelon</p>
+            <p className="text-[11px] text-slate-400 hidden sm:block font-mono">Mango, Banana, Apple, Pomegranate, Watermelon</p>
           </div>
         </div>
 

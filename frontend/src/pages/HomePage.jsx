@@ -9,7 +9,9 @@ import { ALL_FRUITS } from '../services/allFruitVarieties';
 import { MULTI_FRUIT_SAMPLES } from '../services/sampleImages';
 
 export default function HomePage({ setActiveTab, navigateToFruit, modelStatus }) {
-  // Quick test specimens from the multi-fruit dataset & diagnostic tests
+  const visibleFruitIds = ['mango', 'banana', 'apple', 'pomegranate', 'watermelon'];
+
+  /* Removed homepage diagnostic specimen launcher. */
   const quickTestSpecimens = [
     {
       fruitId: 'mango',
@@ -248,12 +250,12 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
             Arrhenius biochemical kinetics forecasting, and Conditional Generative Adversarial Networks (cGAN).
           </p>
 
-          {/* Supported Fruit Switcher Pills (8 Fruits) */}
+          {/* Supported Fruit Switcher Pills (5 Fruits) */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
             <span className="text-xs text-slate-400 font-mono uppercase tracking-wider mr-1">
               Select Fruit Specimen:
             </span>
-            {ALL_FRUITS.map((fruit) => (
+            {ALL_FRUITS.filter(fruit => visibleFruitIds.includes(fruit.id)).map((fruit) => (
               <button
                 key={fruit.id}
                 onClick={() => navigateToFruit ? navigateToFruit(fruit.id) : setActiveTab('analyze')}
@@ -293,7 +295,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
       {/* Live Telemetry & System Metric Counters */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'SUPPORTED FRUITS', val: '8 Fruits', sub: 'Mango, Banana, Papaya, Apple, Orange, Guava, Pomegranate, Watermelon', icon: Zap, color: 'text-emerald-400' },
+          { label: 'SUPPORTED FRUITS', val: '5 Fruits', sub: 'Mango, Banana, Apple, Pomegranate, Watermelon', icon: Zap, color: 'text-emerald-400' },
           { label: 'CULTIVAR DATABASE', val: '30+ Varieties', sub: 'Regional Indian Cultivars', icon: Compass, color: 'text-amber-400' },
           { label: 'PLANT & FOLIAGE GUARD', val: 'Auto-Filter Active', sub: 'Rejects Leaves & Prompts for Fruit', icon: Leaf, color: 'text-teal-400' },
           { label: 'OUT-OF-DATASET AI', val: 'Exotic Fruit Identifier', sub: 'Detects Dragon Fruit, Kiwi, etc.', icon: Cpu, color: 'text-purple-400' }
@@ -320,7 +322,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
               <span>AgriTech Command Cards</span>
             </div>
             <h2 className="text-2xl font-black text-white font-mono">
-              8-Fruit Botanical & Biochemical Profiles
+              5-Fruit Botanical & Biochemical Profiles
             </h2>
           </div>
           <p className="text-xs text-slate-400 font-sans max-w-md">
@@ -329,7 +331,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {fruitProfiles.map((fp) => (
+          {fruitProfiles.filter(fp => visibleFruitIds.includes(fp.id)).map((fp) => (
             <div
               key={fp.id}
               className={`glass-card rounded-2xl p-6 border ${fp.accentBorder} flex flex-col justify-between transition-all hover:scale-[1.01] hover:shadow-xl`}
@@ -393,72 +395,6 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
         </div>
       </section>
 
-      {/* Interactive Quick-Scan Launcher (Pre-Loaded Specimens + Diagnostic Tests) */}
-      <section className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-amber-400 mb-1">
-              <Zap className="w-3.5 h-3.5" />
-              <span>Instant Test Specimens & AI Diagnostic Benchmarks</span>
-            </div>
-            <h3 className="text-xl sm:text-2xl font-black text-white font-mono">
-              Live Test Specimens: 1-Click Scan & Validation
-            </h3>
-            <p className="text-xs text-slate-400 font-sans mt-0.5">
-              Click any specimen to load it directly into the AI scanner. Includes tests for Plant/Foliage Rejection and Unsupported Fruit Detection.
-            </p>
-          </div>
-          <button
-            onClick={() => setActiveTab('analyze')}
-            className="self-start sm:self-auto px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono font-bold text-slate-200 hover:text-white transition-all flex items-center gap-2"
-          >
-            <span>Custom Photo Upload</span>
-            <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {quickTestSpecimens.map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-slate-950/90 rounded-2xl p-4 border border-slate-800/80 hover:border-slate-700 flex flex-col justify-between group transition-all"
-            >
-              <div>
-                {/* Image Preview Container */}
-                <div className="w-full h-36 rounded-xl bg-slate-900 border border-slate-800 overflow-hidden flex items-center justify-center p-2 mb-3 relative group-hover:border-emerald-500/40 transition-colors">
-                  <img
-                    src={item.sample.img}
-                    alt={item.name}
-                    className="h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform"
-                  />
-                  <div className="absolute top-2 right-2">
-                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
-                      {item.badge}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-lg">{item.icon}</span>
-                  <h4 className="text-sm font-bold text-white font-mono">{item.name}</h4>
-                </div>
-                <p className="text-[11px] text-slate-400 font-sans leading-relaxed mb-4">
-                  {item.desc}
-                </p>
-              </div>
-
-              <button
-                onClick={() => navigateToFruit ? navigateToFruit(item.fruitId, item.sample) : setActiveTab('analyze')}
-                className="w-full py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/30 font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-sm"
-              >
-                <Scan className="w-3.5 h-3.5" />
-                <span>Quick Scan Specimen</span>
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Visual Process Flow (Pipeline) */}
       <section className="mb-4">
         <div className="text-center mb-8">
@@ -494,7 +430,7 @@ export default function HomePage({ setActiveTab, navigateToFruit, modelStatus })
           <div>
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
               <Activity className="w-5 h-5 text-emerald-400" />
-              Ripening Dynamics & Commercial Maturity Standards across 8 Fruits
+              Ripening Dynamics & Commercial Maturity Standards across 5 Fruits
             </h3>
             <p className="text-xs text-slate-400 font-sans mt-0.5">
               Reference physical and biochemical criteria recognized by the FruitTwin model suite.

@@ -307,6 +307,31 @@ class Fruits360Classifier:
             except Exception as e:
                 print(f"[Fruits360Classifier] Inference error: {e}")
 
+        # The color heuristic can confuse yellow bananas with mangoes when the
+        # uploaded banana is photographed against a bright or busy background.
+        # Prefer a confident learned banana class in that specific conflict.
+        predicted_group = (class_registry.get_class_info(predicted_class) or {}).get("group", "")
+        if (
+            predicted_class
+            and predicted_group.lower() == "banana"
+            and predicted_prob >= 0.35
+            and cat_id not in {"plant_leaf", "non_fruit", "unsupported_fruit"}
+        ):
+            cat_id = "banana"
+            cat_conf = max(cat_conf, predicted_prob * 100.0)
+            cat_meta = {
+                "object_type": "fruit",
+                "is_fruit": True,
+                "detected_variety": (
+                    "Red Banana (Sevazhai / )"
+                    if "Red" in predicted_class
+                    else "Lady Finger"
+                    if "Lady Finger" in predicted_class
+                    else "Banana (Cavendish / Poovan)"
+                ),
+                "is_red_banana": "Red" in predicted_class
+            }
+
         # Check if the top predicted dataset class is a non-fruit dataset class (Potato Red, Tomato 1, Corn, Chestnut)
         # only if botanical classifier did not detect a supported fruit
         if cat_id not in SUPPORTED_FRUITS_MAP and predicted_class:

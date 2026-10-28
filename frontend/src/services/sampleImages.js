@@ -1,4 +1,39 @@
-// High quality SVG sample vector assets for 8 Fruits + Diagnostic Specimens (Plant Leaf & Unsupported Fruit)
+// Real-photo picks are used as optional demo inputs; the SVG samples remain useful
+// for deterministic diagnostic and stage-specific tests.
+export const REAL_FRUIT_PHOTOS = {
+  mango: [
+    { id: 'mango_real_1', label: 'Fresh mango', stage: 'Fresh', temp: 28, img: 'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=900&q=85' },
+    { id: 'mango_real_2', label: 'Ripe mango', stage: 'Ripe', temp: 28, img: 'https://images.unsplash.com/photo-1605027990121-cbae9f3f7d8b?auto=format&fit=crop&w=900&q=85' }
+  ],
+  banana: [
+    { id: 'banana_real_1', label: 'Fresh bananas', stage: 'Fresh', temp: 28, img: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=900&q=85' },
+    { id: 'banana_real_2', label: 'Ripe bananas', stage: 'Ripe', temp: 28, img: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=900&q=85' }
+  ],
+  papaya: [
+    { id: 'papaya_real_1', label: 'Fresh papaya', stage: 'Fresh', temp: 28, img: 'https://images.unsplash.com/photo-1526318472351-c75fcf070305?auto=format&fit=crop&w=900&q=85' },
+    { id: 'papaya_real_2', label: 'Ripe papaya halves', stage: 'Ripe', temp: 28, img: 'https://images.unsplash.com/photo-1617112848923-cc2234396a8d?auto=format&fit=crop&w=900&q=85' }
+  ],
+  apple: [
+    { id: 'apple_real_1', label: 'Fresh green apple', stage: 'Fresh', temp: 20, img: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=900&q=85' },
+    { id: 'apple_real_2', label: 'Ripe red apple', stage: 'Ripe', temp: 20, img: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=900&q=85' }
+  ],
+  orange: [
+    { id: 'orange_real_1', label: 'Fresh orange', stage: 'Fresh', temp: 24, img: 'https://images.unsplash.com/photo-1547514701-42782101795e?auto=format&fit=crop&w=900&q=85' },
+    { id: 'orange_real_2', label: 'Ripe orange slices', stage: 'Ripe', temp: 24, img: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&w=900&q=85' }
+  ],
+  guava: [
+    { id: 'guava_real_1', label: 'Fresh guava', stage: 'Fresh', temp: 25, img: 'https://images.unsplash.com/photo-1536511132770-e5058f248a3c?auto=format&fit=crop&w=900&q=85' },
+    { id: 'guava_real_2', label: 'Ripe guava halves', stage: 'Ripe', temp: 25, img: 'https://images.unsplash.com/photo-1536591375667-4b6c5e1b5b4b?auto=format&fit=crop&w=900&q=85' }
+  ],
+  pomegranate: [
+    { id: 'pomegranate_real_1', label: 'Fresh pomegranate', stage: 'Fresh', temp: 24, img: 'https://images.unsplash.com/photo-1541344999736-83eca272f6fc?auto=format&fit=crop&w=900&q=85' },
+    { id: 'pomegranate_real_2', label: 'Ripe pomegranate arils', stage: 'Ripe', temp: 24, img: 'https://images.unsplash.com/photo-1604977042946-1eecc30f269e?auto=format&fit=crop&w=900&q=85' }
+  ],
+  watermelon: [
+    { id: 'watermelon_real_1', label: 'Fresh watermelon', stage: 'Fresh', temp: 28, img: 'https://images.unsplash.com/photo-1563114773-84221bd62daa?auto=format&fit=crop&w=900&q=85' },
+    { id: 'watermelon_real_2', label: 'Ripe watermelon slices', stage: 'Ripe', temp: 28, img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=900&q=85' }
+  ]
+};
 
 export const MULTI_FRUIT_SAMPLES = {
   banana: [
